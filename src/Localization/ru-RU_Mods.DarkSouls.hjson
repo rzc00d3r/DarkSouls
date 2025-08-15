@@ -1,0 +1,200 @@
+UI: {
+	YouDiedUI: {
+		MainText: ВЫ ПОГИБЛИ
+		RespawningText: Возрождение через {0} секунд...
+	}
+
+	StatsUI: {
+		Status: Статус
+		CheckStatus: Просмотр статуса
+		LevelUP: Новый уровень
+		RespecStatsTitle: Перераспределение
+		SelectParameterToBoost: Укажите параметры
+		RespecStats: Распределитесь до {0} ур.
+		Covenant: Орден
+		CovenantNone: Нет
+		Level: Уровень
+		Souls: Души
+		ReqSouls: Треб. душ
+		Vitality: Здоровье
+		Attunement: Ученость
+		Endurance: Выносливость
+		Strength: Сила
+		Dexterity: Ловкость
+		Resistance: Сопротив.
+		Intelligence: Интеллект
+		Faith: Вера
+		Humanity: Человечность
+		HP: Здоровье
+		Stamina: Стойкость
+		Mana: Мана
+		Defense: Защита
+		DebuffsResistance: Сопр. к дебаффам
+		InvincibilityFrames: Кадры неуязвимости
+	}
+}
+
+BloodstainMessage:
+	'''
+	Вы вернули потерянные души и человечность!
+	Души: +{0}
+	Человечность: +{1}
+	'''
+BloodstainErrorMessage: Пятно крови вне зоны досягаемости!
+
+ScalingSystem: {
+	ReqParamDisplayName: Треб. парам-ы
+	ParamBonusDisplayName: Бонус к парам-м
+	StrengthDisplayName: Сила
+	DexterityDisplayName: Ловкость
+	IntelligenceDisplayName: Интеллект
+	FaithDisplayName: Вера
+}
+
+Conditionals.DropsFromNormalEnemiesOnlyConditionDescription: Выпадает с враждебных мобов, которые не являются боссами и не были призваны с помощью статуи
+
+Keybinds: {
+	"Toggle Dark Souls Stats UI.DisplayName": Открыть / закрыть окно с характеристиками персонажа
+	Dash.DisplayName: Рывок
+	"Touch the bloodstain.DisplayName": Прикоснуться к пятну крови
+}
+
+Items: {
+	DarkSoulsBonfire: {
+		DisplayName: Костёр (Dark Souls)
+		Tooltip: Щелкните правой кнопкой мыши рядом с костром, чтобы открыть окно повышения уровня игрока
+	}
+
+	CloranthyRing: {
+		DisplayName: Кольцо Клоранти
+		Tooltip:
+			'''
+			Увеличивает скорость восстановление выносливости на {0}%
+			Снижает задержку перед восстановление выносливости на {1}%
+			[c/929292:На этом древнем кольце, происхождение которого неизвестно, выгравирован большой зеленый цветок.]
+			'''
+	}
+
+	FireKeeperSoul: {
+		DisplayName: Душа Хранительницы Огня
+		Tooltip:
+			'''
+			При использовании запускает перераспределение характеристик
+			[c/929292:Душа давно потерянной Хранительницы Огня.]
+			[c/929292:Каждая Хранительница Огня олицетворяет свой костер и хранит человечность,]
+			[c/929292:которую ей преподносят в дар.]
+			'''
+	}
+
+	Humanity: {
+		DisplayName: Человечность
+		Tooltip:
+			'''
+			Даёт 1 единицу человечности
+			[c/929292:Этот чёрный призрак называется человечностью, но о его природе почти ничего не известно.]
+			[c/929292:Если душа является источником любой жизни, в чём суть человечности, которая отличает нас?]
+			'''
+	}
+}
+
+ResourceDisplaySets.CustomResourceBars.DisplayName: Dark Souls
+
+Configs: {
+	ServerConfig: {
+		DisplayName: Настройка сервера и одиночной игры
+
+		SoulsGainMultiplierPercent: {
+			Label: Множитель получаемых душ (в процентах)
+			Tooltip:
+				'''
+				Настраивает количество душ, получаемых за убийство врагов.
+				100% — стандартное значение.
+				Диапазон: 0% - 500%
+				'''
+		}
+
+		LevelUpCostMultiplierPercent: {
+			Label: Множитель стоимости повышения уровня (в процентах)
+			Tooltip:
+				'''
+				Настраивает стоимость повышения уровня.
+				100% — стандартное значение.
+				Диапазон: 0% - 500%
+				'''
+		}
+
+		DisableVanillaDashLock: {
+			Label: Отключить блокировку ванильных рывков
+			Tooltip:
+				'''
+				Если включено, мод перестаёт блокировать все виды рывков, присутствующие в ванильной Terraria.
+				Примеры предметов: Щит Ктулху, Таби, набор мастера ниндзя, комплект солнечной вспышки, комплект кристального ассасина.
+				Также все предметы, использующие внутренние переменные Terraria для рывков, больше не будут блокироваться.
+				Эта настройка может быть полезна, если рывки из других модов перестали работать.
+				Однако имей в виду: при включении этой опции рывки из модов могут накладываться друг на друга, что может
+				привести к непредсказуемым эффектам.
+				'''
+		}
+
+		Headers: {
+			Balance: Баланс
+			Compatibility: Совместимость
+		}
+	}
+
+	ClientConfig: {
+		DisplayName: Клиентские настройки
+
+		Headers: {
+			ResourcePack: Ресурс пак
+			Other: Другое
+		}
+
+		DisableOverrideHurtSounds: {
+			Label: Отключить замену звуков получения урона
+			Tooltip:
+				'''
+				Отключает замену стандартных звуков получения урона на звуки из Dark Souls I.
+
+				ПЕРЕД ИЗМЕНЕНИЯМ ЭТОЙ НАСТРОЙКИ ВЫКЛЮЧИТЕ РЕСУРС ПАК, ИНАЧЕ ВЫ ПОЛУЧИТЕ ОШИБКУ!!!
+				После перезагрузки ВКЛЮЧИТЬ РЕСУРС ПАК чтобы изменения были внесены!!!
+				'''
+		}
+
+		DisableOverrideMusic: {
+			Label: Отключить замену музыки
+			Tooltip:
+				'''
+				Отключает замену стандартной музыки на саундтрек Dark Souls I (Dark Souls with Artorias of the Abyss Edition Original Soundtrack).
+
+				ПЕРЕД ИЗМЕНЕНИЯМ ЭТОЙ НАСТРОЙКИ ВЫКЛЮЧИТЕ РЕСУРС ПАК, ИНАЧЕ ВЫ ПОЛУЧИТЕ ОШИБКУ!!!
+				После перезагрузки ВКЛЮЧИТЬ РЕСУРС ПАК чтобы изменения были внесены!!!
+
+				Список композиций:
+				- Boss1 (Music_5) - Taurus Demon
+				- Boss2 (Music_12) - Four Kings
+				- Boss3 (Music_13) - Gravelord Nito
+				- Boss4 (Music_17) - Iron Golem
+				- Boss5 (Music_25) - Chaos Witch Quelaag
+				- Plantera (Music_24) - Kalameet
+				- Moon Lord (Music_38) - Gwyn, Lord of Cinder
+				- Empress of Light (Music_57) - Gwynevere, Princess of Sunlight
+				- Duke Fishron (Music_58) - Ornstein & Smough
+				- Titles (Music_89) - Nameless Song
+				'''
+		}
+
+		DisableDeathScreen: {
+			Label: Отключить экран смерти
+			Tooltip: Отключает экран смерти (ВЫ ПОГИБЛИ)
+		}
+
+		DisableDash: {
+			Label: Отключить рывок
+			Tooltip: Отключает рывок с кадрами неуязвимости
+		}
+	}
+}
+
+// Projectiles.BloodstainProjectile.DisplayName: Bloodstain Projectile
+Tiles.DarkSoulsBonfire.DisplayName: Dark Souls Bonfire

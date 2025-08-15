@@ -1,0 +1,199 @@
+UI: {
+	YouDiedUI: {
+		MainText: YOU DIED
+		RespawningText: Respawning in {0} seconds...
+	}
+
+	StatsUI: {
+		Status: Status
+		CheckStatus: Check status
+		LevelUP: Level Up
+		RespecStatsTitle: Respec stats
+		SelectParameterToBoost: Select a parameter to boost
+		RespecStats: Respec stats to {0} level
+		Covenant: Covenant
+		CovenantNone: None
+		Level: Level
+		Souls: Souls
+		ReqSouls: ReqSouls
+		Vitality: Vitality
+		Attunement: Attunement
+		Endurance: Endurance
+		Strength: Strength
+		Dexterity: Dexterity
+		Resistance: Resistance
+		Intelligence: Intelligence
+		Faith: Faith
+		Humanity: Humanity
+		HP: HP
+		Stamina: Stamina
+		Mana: Mana
+		Defense: Defense
+		DebuffsResistance: Debuffs resistance
+		InvincibilityFrames: Invincibility frames
+	}
+}
+
+BloodstainMessage:
+	'''
+	You have retrieved your lost souls and humanity!
+	Souls: +{0}
+	Humanity: +{1}
+	'''
+BloodstainErrorMessage: The bloodstain is out of reach!
+
+ScalingSystem: {
+	ReqParamDisplayName: ReqParam
+	ParamBonusDisplayName: ParamBonus
+	StrengthDisplayName: Strength
+	DexterityDisplayName: Dexterity
+	IntelligenceDisplayName: Intelligence
+	FaithDisplayName: Faith
+}
+
+Conditionals.DropsFromNormalEnemiesOnlyConditionDescription: Dropped by hostile enemies that are not bosses and were not spawned using a statue
+
+Keybinds: {
+	"Toggle Dark Souls Stats UI.DisplayName": Open / close window with player stats
+	Dash.DisplayName: Dash
+	"Touch the bloodstain.DisplayName": Touch the bloodstain
+}
+
+Items: {
+	DarkSoulsBonfire: {
+		DisplayName: Dark Souls Bonfire
+		Tooltip: Right-click near the bonfire to open the level-up menu
+	}
+
+	CloranthyRing: {
+		DisplayName: Cloranthy Ring
+		Tooltip:
+			'''
+			Increases stamina regeneration rate by {0}%
+			Reduces delay before stamina regeneration by {1}%
+			[c/929292:This ancient ring, engraved with a large green flower, is of unknown origin.]
+			'''
+	}
+
+	FireKeeperSoul: {
+		DisplayName: Fire Keeper Soul
+		Tooltip:
+			'''
+			Using this item initiates stat redistribution
+			[c/929292:Soul of a long-lost Fire Keeper.]
+			[c/929292:Each Fire Keeper is a corporeal manifestation of her bonfire, and a draw]
+			[c/929292:for the humanity which is offered to her.]
+			'''
+	}
+
+	Humanity: {
+		DisplayName: Humanity
+		Tooltip:
+			'''
+			Use to gain 1 humanity
+			[c/929292:This black sprite is called humanity, but little is known about its true nature.]
+			[c/929292:If the soul is the source of all life, then what distinguishes the humanity we hold within ourselves?]
+			'''
+	}
+}
+
+ResourceDisplaySets.CustomResourceBars.DisplayName: Dark Souls
+
+Configs: {
+	ServerConfig: {
+		DisplayName: Server and single-player config
+
+		SoulsGainMultiplierPercent: {
+			Label: Souls Gain Multiplier (in percent)
+			Tooltip:
+				'''
+				Sets the amount of souls gained from killing enemies.
+				100% is the default value.
+				Range: 0% - 500%
+				'''
+		}
+
+		LevelUpCostMultiplierPercent: {
+			Label: Level Up Cost Multiplier (in percent)
+			Tooltip:
+				'''
+				Adjusts the cost required to level up.
+				100% is the default value.
+				Range: 0% - 500%
+				'''
+		}
+
+		DisableVanillaDashLock: {
+			Label: Disable Vanilla Dash Lock
+			Tooltip:
+				'''
+				If enabled, this mod will stop blocking all types of dashes present in vanilla Terraria.
+				Examples of affected items: Shield of Cthulhu, Tabi, Master Ninja Gear, Solar Flare set, Crystal Assassin set.
+				All items that use vanilla dash-related variables will also remain unblocked.
+				This can be useful if dashes from other mods have stopped working.  
+				However, enabling this option may cause modded dashes to overlap with each other, which can lead to unpredictable behavior.
+				'''
+		}
+
+		Headers: {
+			Balance: Balance
+			Compatibility: Compatibility
+		}
+	}
+
+	ClientConfig: {
+		DisplayName: Client Config
+
+		Headers: {
+			ResourcePack: Resource Pack
+			Other: Other
+		}
+
+		DisableOverrideHurtSounds: {
+			Label: Disable Override Hurt Sounds
+			Tooltip:
+				'''
+				Disables the replacement of default damage sounds with Dark Souls I sounds.
+
+				DISABLE THE RESOURCE PACK BEFORE CHANGING THIS SETTING, OR YOU WILL GET AN ERROR!!!
+				After reloading, ENABLE THE RESOURCE PACK to apply the changes!
+				'''
+		}
+
+		DisableOverrideMusic: {
+			Label: Disable Music Replacement
+			Tooltip:
+				'''
+				Disables the replacement of default music with tracks from Dark Souls I (Dark Souls with Artorias of the Abyss Edition Original Soundtrack).
+
+				DISABLE THE RESOURCE PACK BEFORE CHANGING THIS SETTING, OR YOU WILL GET AN ERROR!!!
+				After reloading, ENABLE THE RESOURCE PACK to apply the changes!
+
+				Track list:
+				- Boss1 (Music_5) - Taurus Demon
+				- Boss2 (Music_12) - Four Kings
+				- Boss3 (Music_13) - Gravelord Nito
+				- Boss4 (Music_17) - Iron Golem
+				- Boss5 (Music_25) - Chaos Witch Quelaag
+				- Plantera (Music_24) - Kalameet
+				- Moon Lord (Music_38) - Gwyn, Lord of Cinder
+				- Empress of Light (Music_57) - Gwynevere, Princess of Sunlight
+				- Duke Fishron (Music_58) - Ornstein & Smough
+				- Titles (Music_89) - Nameless Song
+				'''
+		}
+
+		DisableDeathScreen: {
+			Label: Disable Death Screen
+			Tooltip: Disables the death screen (YOU DIED)
+		}
+
+		DisableDash: {
+			Label: Disable Dash
+			Tooltip: Disables the dash with invincibility frames
+		}
+	}
+}
+
+Projectiles.BloodstainProjectile.DisplayName: Bloodstain Projectile
+Tiles.DarkSoulsBonfire.DisplayName: Dark Souls Bonfire
