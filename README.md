@@ -6,6 +6,8 @@
 
 [中文](README_ZH.md) | English
 
+[![Discord](https://img.shields.io/discord/1288995603765919795)](https://discord.gg/jwTRnFvCc2)
+
 <img src="src/icon_workshop.png" alt="Icon" style="max-width: 100%;"/>
 
 </div>
@@ -117,6 +119,7 @@
 </ol>
 
 </details>
+
 
 
 
