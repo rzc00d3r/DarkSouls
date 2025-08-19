@@ -41,7 +41,7 @@
 
 <strong>⚠️ Warning ⚠️</strong>  
 
-To activate all changes, you need to enable the resource pack and set it to the highest priority in the tModLoader settings!
+**To activate all changes, you need to enable the resource pack and set it to the highest priority in the tModLoader settings!**
 
 </details>
 
@@ -70,12 +70,9 @@ To activate all changes, you need to enable the resource pack and set it to the 
 * Terraria - Полностью
 * Calamity - Полностью, но требуются дополнительные тесты
 
-
-**Для активации всех изменений, требуется включить ресурс пак и поставить ему найвысший приоритет в настройках tModLoader!**
-
 <strong>⚠️ Внимание ⚠️</strong>
 
-Для активации всех изменений, требуется включить ресурс пак и поставить ему найвысший приоритет в настройках tModLoader!
+**Для активации всех изменений, требуется включить ресурс пак и поставить ему найвысший приоритет в настройках tModLoader!**
 
 </details>
 
@@ -120,6 +117,7 @@ To activate all changes, you need to enable the resource pack and set it to the 
 </ol>
 
 </details>
+
 
 
 
