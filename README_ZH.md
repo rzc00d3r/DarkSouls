@@ -36,7 +36,7 @@
 
 ⚠️ 注意！⚠️
 
-要启用所有改动，请启用资源包并在 tModLoader 设置中将其设为最高优先级！
+**要启用所有改动，请启用资源包并在 tModLoader 设置中将其设为最高优先级！**
 
 ---
 
@@ -55,6 +55,7 @@
   <li><a href="wiki/ModSupport_ZH.md">模组支持</a></li>
   <li><a href="wiki/Other_ZH.md">其他</a></li>
 </ol>
+
 
 
 
