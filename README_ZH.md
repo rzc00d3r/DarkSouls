@@ -6,6 +6,8 @@
 
 中文 | [English](README.md)
 
+[![Discord](https://img.shields.io/discord/1288995603765919795)](https://discord.gg/jwTRnFvCc2)
+
 <img src="src/icon_workshop.png" alt="Icon" style="max-width: 100%;"/>
 
 </div>
@@ -55,6 +57,7 @@
   <li><a href="wiki/ModSupport_ZH.md">模组支持</a></li>
   <li><a href="wiki/Other_ZH.md">其他</a></li>
 </ol>
+
 
 
 
