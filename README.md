@@ -120,8 +120,8 @@
 
 </details>
 
+---
 
-
-
-
-
+### 💰 Donations 💰
+You can support this project financially
+* PayPal - **raze.c0d3r@gmail.com**
