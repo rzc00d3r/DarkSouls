@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using Terraria;
 using Terraria.ID;
@@ -238,7 +238,7 @@ namespace DarkSouls.DataStructures
             {ItemID.CobaltDrill, new(6, 0, 0, 0) },
             {ItemID.CobaltNaginata, new(12, 8, 0, 0, ScalingGrade.D, ScalingGrade.E) },
             {ItemID.CobaltPickaxe, new(6, 0, 0, 0) },
-            {ItemID.CobaltRepeater, new(3, 17, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
+            {ItemID.CobaltRepeater, new(2, 18, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
             {ItemID.CobaltSword, new(15, 5, 0, 0, ScalingGrade.D, ScalingGrade.E) },
             {ItemID.CobaltWaraxe, new(18, 4, 0, 0, ScalingGrade.D, ScalingGrade.E) },
 
@@ -246,7 +246,7 @@ namespace DarkSouls.DataStructures
             {ItemID.PalladiumDrill, new(6, 0, 0, 0) },
             {ItemID.PalladiumPike, new(12, 8, 0, 0, ScalingGrade.D, ScalingGrade.E) },
             {ItemID.PalladiumPickaxe, new(6, 0, 0, 0) },
-            {ItemID.PalladiumRepeater, new(3, 17, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
+            {ItemID.PalladiumRepeater, new(2, 18, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
             {ItemID.PalladiumSword, new(15, 5, 0, 0, ScalingGrade.D, ScalingGrade.E) },
             {ItemID.PalladiumWaraxe, new(18, 4, 0, 0, ScalingGrade.D, ScalingGrade.E) },
 
@@ -346,7 +346,7 @@ namespace DarkSouls.DataStructures
             {ItemID.Gungnir, new(16, 12, 0, 0, ScalingGrade.C, ScalingGrade.D) },
             {ItemID.BloodHamaxe, new(16, 4, 0, 0, ScalingGrade.B) },
             {ItemID.HallowJoustingLance, new(30, 5, 0, 0, ScalingGrade.S) },
-            {ItemID.HallowedRepeater, new(2, 26, 0, 0, dexterityScalingGrade: ScalingGrade.C) },
+            {ItemID.HallowedRepeater, new(3, 25, 0, 0, dexterityScalingGrade: ScalingGrade.C) },
             {ItemID.HamBat, new(25, 5, 0, 0, ScalingGrade.A) },
             {ItemID.Hammush, new(20, 3, 0, 0, ScalingGrade.C) },
             {ItemID.Handgun, new(3, 12, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
@@ -431,7 +431,7 @@ namespace DarkSouls.DataStructures
             {ItemID.MythrilDrill, new(7, 0, 0, 0) },
             {ItemID.MythrilHalberd, new(12, 10, 0, 0, ScalingGrade.D, ScalingGrade.D) },
             {ItemID.MythrilPickaxe, new(7, 0, 0, 0) },
-            {ItemID.MythrilRepeater, new(2, 19, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
+            {ItemID.MythrilRepeater, new(2, 20, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
             {ItemID.MythrilSword, new(18, 5, 0, 0, ScalingGrade.C, ScalingGrade.E) },
             {ItemID.MythrilWaraxe, new(20, 5, 0, 0, ScalingGrade.C, ScalingGrade.E) },
 
@@ -439,7 +439,7 @@ namespace DarkSouls.DataStructures
             {ItemID.OrichalcumDrill, new(7, 0, 0, 0) },
             {ItemID.OrichalcumHalberd, new(12, 10, 0, 0, ScalingGrade.D, ScalingGrade.D) },
             {ItemID.OrichalcumPickaxe, new(7, 0, 0, 0) },
-            {ItemID.OrichalcumRepeater, new(2, 19, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
+            {ItemID.OrichalcumRepeater, new(2, 20, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
             {ItemID.OrichalcumSword, new(18, 5, 0, 0, ScalingGrade.C, ScalingGrade.E) },
             {ItemID.OrichalcumWaraxe, new(20, 5, 0, 0, ScalingGrade.C, ScalingGrade.E) },
 
