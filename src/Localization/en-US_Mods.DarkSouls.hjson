@@ -138,6 +138,17 @@ Configs: {
 		Headers: {
 			Balance: Balance
 			Compatibility: Compatibility
+			ScalingSystem: Scaling system (ReqParam & ParamBonus)
+		}
+
+		DisableScalingSystemForVanilla: {
+			Label: Disable Scaling System for [c/00A321:Vanilla Terraria]
+			Tooltip: Disables stat requirements (ReqParam) and stat bonuses (ParamBonus) for weapons and tools from [c/00A321:Vanilla Terraria]
+		}
+
+		DisableScalingSystemForCalamity: {
+			Label: Disable Scaling System for [c/D40000:Calamity Mod]
+			Tooltip: Disables stat requirements (ReqParam) and stat bonuses (ParamBonus) for weapons and tools from [c/D40000:Calamity Mod]
 		}
 	}
 

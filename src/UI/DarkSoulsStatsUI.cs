@@ -618,11 +618,8 @@ namespace DarkSouls.UI
             updateSoulsValue = true;
             firstUpdate = true;
             levelUPCosts.Clear();
-            if (respecStats)
-            {
-                respecStats = false;
-                openedFromBonfire = false;
-            }
+            respecStats = false;
+            openedFromBonfire = false;
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
