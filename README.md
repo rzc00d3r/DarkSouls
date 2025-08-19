@@ -96,6 +96,7 @@ To activate all changes, you need to enable the resource pack and set it to the 
   <li><a href="wiki/Hotkeys_RU.md">Горячие клавишы</a></li>
   <li><a href="wiki/Config_RU.md">Настройки мода</a></li>
   <li><a href="wiki/ResourcePack_RU.md">Ресурс пак</a></li>
+  <li><a href="wiki/ModSupport_RU.md">Поддержка модов</a></li>
   <li><a href="wiki/Other_RU.md">Прочее</a></li>
 </ol>
 
@@ -114,10 +115,12 @@ To activate all changes, you need to enable the resource pack and set it to the 
   <li><a href="wiki/Hotkeys_EN.md">Hotkeys</a></li>
   <li><a href="wiki/Config_EN.md">Mod Config</a></li>
   <li><a href="wiki/ResourcePack_EN.md">Resource Pack</a></li>
+  <li><a href="wiki/ModSupport_EN.md">Mod Support</a></li>
   <li><a href="wiki/Other_EN.md">Other</a></li>
 </ol>
 
 </details>
+
 
 
 
