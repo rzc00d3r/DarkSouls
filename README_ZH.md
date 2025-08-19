@@ -52,10 +52,9 @@
   <li><a href="wiki/Hotkeys_ZH.md">快捷键</a></li>
   <li><a href="wiki/Config_ZH.md">模组配置</a></li>
   <li><a href="wiki/ResourcePack_ZH.md">资源包</a></li>
+  <li><a href="wiki/ModSupport_ZH.md">模组支持</a></li>
   <li><a href="wiki/Other_ZH.md">其他</a></li>
 </ol>
-
-
 
 
 
