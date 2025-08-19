@@ -22,8 +22,8 @@
 
 #### Как выбрать тему индикаторов
 
-![](https://github.com/rzc0d3r/DarkSouls/blob/main/wiki/images/Settings_DarkSoulsBars_RU.jpg)
+![](images/Settings_DarkSoulsBars_RU.jpg)
 
 #### Вид этих индикаторов в игре 
 
-![](https://github.com/rzc0d3r/DarkSouls/blob/main/wiki/images/InGame_DarkSoulsBars.jpg)
+![](images/InGame_DarkSoulsBars.jpg)

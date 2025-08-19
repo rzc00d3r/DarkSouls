@@ -37,11 +37,11 @@ If all required stat levels are met, the required stat values will be highlighte
 
 #### Example when stat requirements are NOT met
 
-![](https://github.com/rzc0d3r/DarkSouls/blob/main/wiki/images/ReqParam_Error_EN.jpg)
+![](images/ReqParam_Error_EN.jpg)
 
 #### Example when stat requirements ARE met
 
-![](https://github.com/rzc0d3r/DarkSouls/blob/main/wiki/images/ReqParam_OK_EN.jpg)
+![](images/ReqParam_OK_EN.jpg)
 
 Bonus damage is calculated as the **sum of all individual stat bonuses**, based on: **Strength, Dexterity, Intelligence, and Faith**.
 

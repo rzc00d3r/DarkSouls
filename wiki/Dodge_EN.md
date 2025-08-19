@@ -22,8 +22,8 @@ To display the stamina bar on screen, you need to select the **Dark Souls** them
 
 #### How to select the indicator theme
 
-![](https://github.com/rzc0d3r/DarkSouls/blob/main/wiki/images/Settings_DarkSoulsBars_EN.jpg)
+![](images/Settings_DarkSoulsBars_EN.jpg)
 
 #### In-game appearance of these indicators
 
-![](https://github.com/rzc0d3r/DarkSouls/blob/main/wiki/images/InGame_DarkSoulsBars.jpg)
+![](images/InGame_DarkSoulsBars.jpg)
