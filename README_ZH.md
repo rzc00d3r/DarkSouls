@@ -58,7 +58,11 @@
   <li><a href="wiki/Other_ZH.md">其他</a></li>
 </ol>
 
+---
 
+### 💰 捐赠 💰
+您可以通过以下方式资助此项目
+* PayPal - **[raze.c0d3r@gmail.com](mailto:raze.c0d3r@gmail.com)**
 
 
 
