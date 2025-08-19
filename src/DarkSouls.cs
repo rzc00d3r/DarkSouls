@@ -1,4 +1,3 @@
-
 using System.IO;
 using System.Collections.Generic;
 
@@ -10,8 +9,11 @@ using Terraria.ModLoader;
 using ReLogic.Content;
 using ReLogic.Graphics;
 
+using DarkSouls.NPCs;
 using DarkSouls.Utils;
 using DarkSouls.Config;
+using DarkSouls.Systems;
+using DarkSouls.DataStructures;
 
 namespace DarkSouls
 {
@@ -49,6 +51,10 @@ namespace DarkSouls
         private static float DSFemaleDamageSoundVolume = 0.35f;
         #endregion
 
+        #region Global Flags
+        public static bool CalamityModIsEnabled = false;
+        #endregion
+
         public enum NetMessageTypes : byte
         {
             GetSouls,
@@ -57,6 +63,7 @@ namespace DarkSouls
 
         public override void PostSetupContent()
         {
+            #region Resource Pack
             DarkSoulsResourcePack.GetInfo();
 
             if (!DarkSoulsResourcePack.IsInstalled)
@@ -76,6 +83,19 @@ namespace DarkSouls
                 DarkSoulsResourcePack.EnableOverrideResources(false, true);
 
             DarkSoulsResourcePack.GetInfo();
+            #endregion
+
+            #region Calamity Mod Support
+            if (ModLoader.HasMod("CalamityMod"))
+            {
+                CalamityModIsEnabled = true;
+                CalamityModScalingSystem.Initialize();
+                CalamityNPCID.Initialize();
+                CalamityDownedBossSystem.Initialize();
+                SoulsDropSystem.EnableCalamityModSupport();
+            }
+            #endregion
+
         }
 
         public override void Load()

@@ -27,5 +27,12 @@ namespace DarkSouls.Config
         [Header("Compatibility")]
         [DefaultValue(false)]
         public bool DisableVanillaDashLock = false;
+
+        [Header("$Mods.DarkSouls.Configs.ServerConfig.Headers.ScalingSystem")]
+        [DefaultValue(false)]
+        public bool DisableScalingSystemForVanilla = false;
+
+        [DefaultValue(false)]
+        public bool DisableScalingSystemForCalamity = false;
     }
 }

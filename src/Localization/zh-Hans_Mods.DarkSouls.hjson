@@ -138,6 +138,17 @@ Configs: {
 		Headers: {
 			Balance: 平衡
 			Compatibility: 兼容性
+			ScalingSystem: 缩放系统 (需求属性 & 属性加成)
+		}
+
+		DisableScalingSystemForVanilla: {
+			Label: 禁用 [c/00A321:原版 Terraria] 的缩放系统
+			Tooltip: 禁用 [c/00A321:原版 Terraria] 武器和工具的属性需求 (需求属性) 与属性加成 (属性加成)
+		}
+
+		DisableScalingSystemForCalamity: {
+			Label: 禁用 [c/D40000:Calamity Mod] 的缩放系统
+			Tooltip: 禁用 [c/D40000:Calamity Mod] 武器和工具的属性需求 (需求属性) 与属性加成 (属性加成)
 		}
 	}
 
