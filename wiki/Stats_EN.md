@@ -118,10 +118,11 @@ Each stat, except humanity, has its own **soft caps** that reduce the efficiency
 
 #### Resistance (Dash Invincibility Frames)
 
-| Resistance Level | iFrame Gain per Level | Max Value at End of Range |
+| Resistance Level | iFrame Gain per Level  | Max Value at End of Range  |
 |------------------|------------------------|----------------------------|
-| 1–31             | +0.166 iFrames         | 15 iFrames                 |
-| 32–99            | +0.075 iFrames         | 20 iFrames                 |
+| 1–11             | +0.5 iFrames           | 15 iFrames                 |
+| 12–31            | +0.25 iFrames          | 20 iFrames                 |
+| 32–99            | +0.073 iFrames         | 25 iFrames                 |
 
 #### Intelligence
 
