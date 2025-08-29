@@ -5,6 +5,8 @@ namespace DarkSouls.Core
 {
     public static class StatFormulas
     {
+        public static float TicksToSeconds(int ticks) => ticks * 1f / 60f;
+
         public static int GetHPByVitality(int vitality)
         {
             int hp = 0;
@@ -54,12 +56,20 @@ namespace DarkSouls.Core
         public static float GetStaminaByEndurance(int endurance)
         {
             float stamina = DarkSoulsPlayer.DEFAULT_MAX_STAMINA;
-            stamina += Math.Max(0, Math.Min(endurance - 1, 10)) * 3; // +30
+            stamina += Math.Max(0, Math.Min(endurance - 1, 10)) * 6; // +60
             stamina += Math.Max(0, Math.Min(endurance - 11, 30)) * 2; // +60
             stamina += Math.Max(0, Math.Min(endurance - 41, 57)) * 1; // +57
-            if (endurance >= 99)
+            if (endurance >= 99) // max = 60 + 60 + 60 + 57 + 3 = 240
                 stamina = (stamina + 9) / 10 * 10; // rounding by multiples of 10
             return stamina;
+        }
+
+        public static int GetDashCooldownByEndurance(int endurance)
+        {
+            int dashCooldown = DarkSoulsPlayer.DEFAULT_DASH_COOLDOWN; // 40 ticks (0.66s)
+            dashCooldown -= Math.Max(0, Math.Min(endurance - 1, 10)); // -10 ticks = 30 ticks (0.5s)
+            dashCooldown -= (int)(Math.Max(0, Math.Min(endurance - 11, 30)) / 6d); // -5 ticks = 25 ticks (0.416s)
+            return dashCooldown;
         }
 
         public static float GetPotentialByStrength(int strength)
@@ -95,7 +105,7 @@ namespace DarkSouls.Core
             int reqSouls = 0;
 
             if (level >= 35) // 35+
-                reqSouls = (int)(0.02 * Math.Pow(level, 3) + 3.05 * Math.Pow(level, 2) + 90 * level - 6500);
+                reqSouls = (int)((0.02 * Math.Pow(level, 3) + 3.05 * Math.Pow(level, 2) + 90 * level - 6500) * 1.05d);
             else if (level > 0 && level < 35) // 1 - 35
                 reqSouls = (int)(500 * Math.Pow(1.025, level - 1)); // 2.5% increase per level
 

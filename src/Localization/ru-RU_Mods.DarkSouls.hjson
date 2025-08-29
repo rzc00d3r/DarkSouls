@@ -31,6 +31,8 @@ UI: {
 		Defense: Защита
 		DebuffsResistance: Сопр. к дебаффам
 		InvincibilityFrames: Кадры неуязвимости
+		DashCooldown: Время перезарядки рывка
+		DashCooldownTime: "{0}с"
 	}
 }
 

@@ -80,6 +80,7 @@ namespace DarkSouls.UI
         private UIText debuffsResistanceValue;
         private UIText staminaValue;
         private UIText invincibilityFramesValue;
+        private UIText dashCooldownValue;
 
         private Texture2D statusTexture;
         private Texture2D levelUPTexture;
@@ -322,6 +323,8 @@ namespace DarkSouls.UI
 
             Texture2D emptyStatIcon = ModContent.Request<Texture2D>("DarkSouls/UI/Textures/EmptyStatIcon", AssetRequestMode.ImmediateLoad).Value;
             CreateStatUIElement(ref invincibilityFramesValue, emptyStatIcon, Language.GetTextValue("Mods.DarkSouls.UI.StatsUI.InvincibilityFrames"), "10", statPanel, debuffsResistanceValue);
+            
+            CreateStatUIElement(ref dashCooldownValue, emptyStatIcon, Language.GetTextValue("Mods.DarkSouls.UI.StatsUI.DashCooldown"), Language.GetTextValueWith("Mods.DarkSouls.UI.StatsUI.DashCooldownTime", Math.Round(StatFormulas.TicksToSeconds(DarkSoulsPlayer.DEFAULT_DASH_COOLDOWN), 2)), statPanel, dashCooldownValue);
         }
 
         public override void OnInitialize()
@@ -349,6 +352,8 @@ namespace DarkSouls.UI
             DarkSoulsPlayer dsPlayer = Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>();
             playerName.SetText(Main.LocalPlayer.name);
 
+            LocalizedText dashCooldownTime = Language.GetText("Mods.DarkSouls.UI.StatsUI.DashCooldownTime");
+
             if (!openedFromBonfire && !respecStats) // show real stats (Status out of the bonfire)
             {
                 ResetValues();
@@ -364,6 +369,7 @@ namespace DarkSouls.UI
                 defenseValue.SetText($"{Math.Round(StatFormulas.GetDefenseByResistance(Int32.Parse(resistanceValue.Text)) * 100, 2)}%");
                 debuffsResistanceValue.SetText($"{Math.Round(StatFormulas.GetDebuffsResistanceByResistance(Int32.Parse(resistanceValue.Text)) * 100, 2)}%");
                 invincibilityFramesValue.SetText($"{StatFormulas.GetInvincibilityFramesByResistance(dsPlayer.dsResistance)}");
+                dashCooldownValue.SetText(dashCooldownTime.WithFormatArgs(Math.Round(StatFormulas.TicksToSeconds(StatFormulas.GetDashCooldownByEndurance(dsPlayer.dsEndurance)), 2)));
             }
             else if (respecStats && !openedFromBonfire) // respec stats
             {
@@ -413,13 +419,20 @@ namespace DarkSouls.UI
                 int invincibilityFramesOld = StatFormulas.GetInvincibilityFramesByResistance(dsPlayer.dsResistance);
                 int invincibilityFramesNew = StatFormulas.GetInvincibilityFramesByResistance(Int32.Parse(resistanceValue.Text));
 
+                int dashCooldownOld = StatFormulas.GetDashCooldownByEndurance(dsPlayer.dsEndurance);
+                int dashCooldownNew = StatFormulas.GetDashCooldownByEndurance(Int32.Parse(enduranceValue.Text));
+                double dashCooldownTimeNew = Math.Round(StatFormulas.TicksToSeconds(dashCooldownOld), 2);
+                string dashCooldownTimeOldString = dashCooldownTime.WithFormatArgs(Math.Round(StatFormulas.TicksToSeconds(dashCooldownOld), 2)).Value;
+                string dashCooldownTimeNewString = dashCooldownTime.WithFormatArgs(Math.Round(StatFormulas.TicksToSeconds(dashCooldownNew), 2)).Value;
+                
                 hpValue.SetText($"{Main.LocalPlayer.statLifeMax2} > {Main.LocalPlayer.statLifeMax2 + hpNew - hpOld}");
                 staminaValue.SetText($"{dsPlayer.maxStamina} > {staminaNew}");
                 manaValue.SetText($"{Main.LocalPlayer.statManaMax2} > {Main.LocalPlayer.statManaMax2 + manaNew - manaOld}");
                 defenseValue.SetText($"{defenseOld}% > {defenseNew}%");
                 debuffsResistanceValue.SetText($"{debuffsResistanceOld}% > {debuffsResistanceNew}%");
                 invincibilityFramesValue.SetText($"{invincibilityFramesOld} > {invincibilityFramesNew}");
-
+                dashCooldownValue.SetText($"{dashCooldownTimeOldString} > {dashCooldownTimeNewString}");
+                
                 if (Int32.Parse(levelValue.Text) == dsPlayer.PlayerLevel &&
                     Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(ModContent.ItemType<FireKeeperSoul>()))
                 {
@@ -456,12 +469,18 @@ namespace DarkSouls.UI
                 int invincibilityFramesVisual = StatFormulas.GetInvincibilityFramesByResistance(Int32.Parse(resistanceValue.Text));
                 int invincibilityFramesReal = StatFormulas.GetInvincibilityFramesByResistance(dsPlayer.dsResistance);
 
+                int dashCooldownVisual = StatFormulas.GetDashCooldownByEndurance(Int32.Parse(enduranceValue.Text));
+                int dashCooldownReal = StatFormulas.GetDashCooldownByEndurance(dsPlayer.dsEndurance);
+                string dashCooldownVisualString = dashCooldownTime.WithFormatArgs(Math.Round(StatFormulas.TicksToSeconds(dashCooldownVisual), 2)).Value;
+                string dashCooldownRealString = dashCooldownTime.WithFormatArgs(Math.Round(StatFormulas.TicksToSeconds(dashCooldownReal), 2)).Value;
+
                 hpValue.SetText($"{Main.LocalPlayer.statLifeMax2} > {Main.LocalPlayer.statLifeMax2 + hpVisual - hpReal}");
                 staminaValue.SetText($"{(int)Math.Floor(dsPlayer.currentStamina)} > {staminaVisual}");
                 manaValue.SetText($"{Main.LocalPlayer.statManaMax2} > {Main.LocalPlayer.statManaMax2 + manaVisual - manaReal}");
                 defenseValue.SetText($"{Math.Round(defenseReal * 100, 2)}% > {Math.Round(defenseVisual * 100, 2)}%");
                 debuffsResistanceValue.SetText($"{Math.Round(debuffsResistanceReal * 100, 2)}% > {Math.Round(debuffsResistanceVisual * 100, 2)}%");
                 invincibilityFramesValue.SetText($"{invincibilityFramesReal} > {invincibilityFramesVisual}");
+                dashCooldownValue.SetText($"{dashCooldownRealString} > {dashCooldownVisualString}");
                 if (updateSoulsValue)
                 {
                     soulsValue.SetText(dsPlayer.dsSouls.ToString());

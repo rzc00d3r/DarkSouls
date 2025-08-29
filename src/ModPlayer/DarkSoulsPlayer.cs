@@ -153,9 +153,10 @@ namespace DarkSouls
         public const int dashLeft = 3;
         private int dashDir = -1;
 
+        public const int DEFAULT_DASH_COOLDOWN = 40;
         private int dashDelay = 0;
         private int dashTimer = 0;
-        private int dashCooldown = 40;
+        public static int dashCooldown { get; protected set; } = DEFAULT_DASH_COOLDOWN;
         public static int dashDuration { get; protected set; } = 20;
         private const float dashVelocity = 10f;
         private bool customDashKey = false;
@@ -229,6 +230,10 @@ namespace DarkSouls
             #region Reset Accessories Flags
             CloranthyRingEffect = false;
             #endregion
+
+            #region Update Player Stats
+            dashCooldown = StatFormulas.GetDashCooldownByEndurance(endurance);
+            #endregion
         }
 
         public override void PreUpdate()
@@ -250,7 +255,6 @@ namespace DarkSouls
 
                 switch (dashDir)
                 {
-                    
                     //case dashUp when Player.velocity.Y > -dashVelocity:
                     //case dashDown when Player.velocity.Y < dashVelocity:
                     //{

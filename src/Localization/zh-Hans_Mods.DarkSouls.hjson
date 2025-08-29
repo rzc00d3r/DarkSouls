@@ -31,6 +31,8 @@ UI: {
 		Defense: 防御
 		DebuffsResistance: 减益抗性
 		InvincibilityFrames: 无敌帧
+		DashCooldown: 冲刺冷却
+		DashCooldownTime: "{0}秒"
 	}
 }
 
