@@ -18,7 +18,7 @@ namespace DarkSouls.Common.ItemDropRules
                 npc.type == NPCID.LunarTowerStardust || npc.type == NPCID.LunarTowerVortex)
                 return false;
 
-            if (npc.SpawnedFromStatue || npc.friendly || npc.townNPC || npc.lifeMax <= 5 || npc.damage == 0)
+            if (npc.SpawnedFromStatue || npc.friendly || npc.townNPC || npc.lifeMax <= 5 || (npc.aiStyle == 0 && npc.damage == 0))
                 return false;
 
             return true;

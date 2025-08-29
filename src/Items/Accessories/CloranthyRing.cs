@@ -7,8 +7,8 @@ namespace DarkSouls.Items.Accessories
 {
     public class CloranthyRing : ModItem
     {
-        public const float StaminaRegenRateBonus = 0.25f;
-        public const float StaminaRegenDelayReductionBonus = 0.15f;
+        public const float StaminaRegenRateBonus = 0.30f;
+        public const float StaminaRegenDelayReductionBonus = 0.22f;
 
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs((int)(StaminaRegenRateBonus * 100), (int)(StaminaRegenDelayReductionBonus * 100));
 

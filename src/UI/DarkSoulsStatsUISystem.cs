@@ -13,8 +13,6 @@ namespace DarkSouls.UI
         internal UserInterface userInterface;
         internal DarkSoulsStatsUI dsStatsUI;
 
-
-
         private bool openedFromBonfire = false;
         private bool respecStats = false;
         private int bonfireX = 0;

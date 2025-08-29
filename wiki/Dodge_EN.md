@@ -8,7 +8,7 @@ Immediately after the dash begins, the character gains **invincibility frames**,
 
 The number of invincibility frames can be increased by raising the **Resistance** stat.
 
-After the dash ends, there is a **0.66 second cooldown**, during which you **cannot dash**, even if you have enough stamina!
+After the dash ends, there is cooldown, during which you **cannot dash**, even if you have enough stamina!
 
 ---
 

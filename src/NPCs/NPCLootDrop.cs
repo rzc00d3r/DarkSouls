@@ -14,7 +14,7 @@ public class DarkSoulsNPCLootDrop : GlobalNPC
     {
         // Cloranthy Ring
         if (npc.type == NPCID.GiantTortoise)
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CloranthyRing>(), 12)); // 8.33%
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CloranthyRing>(), 25)); // 4%
         else // Humanity
             npcLoot.Add(ItemDropRule.ByCondition(new DropsFromNormalEnemiesOnlyCondition(), ModContent.ItemType<Humanity>(), 100)); // 1%
     }

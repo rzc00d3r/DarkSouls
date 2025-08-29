@@ -31,6 +31,8 @@ UI: {
 		Defense: Defense
 		DebuffsResistance: Debuffs resistance
 		InvincibilityFrames: Invincibility frames
+		DashCooldown: Dash cooldown
+		DashCooldownTime: "{0}s"
 	}
 }
 
