@@ -8,7 +8,7 @@
 |----|------------------|--------|
 | 1  | Vitality         | Increases the player's maximum health |
 | 2  | Attunement       | Increases the player's maximum mana |
-| 3  | Endurance        | Increases the player's maximum stamina |
+| 3  | Endurance        | Increases the player's maximum stamina and reduces dash cooldown time |
 | 4  | Strength         | Increases Strength-based damage and allows wielding weapons that require Strength |
 | 5  | Dexterity        | Increases Dexterity-based damage and allows wielding weapons that require Dexterity |
 | 6  | Resistance       | Increases damage reduction and invincibility frames when dashing (similar to Adaptability from Dark Souls 2); reduces debuff duration |
@@ -71,14 +71,22 @@ Each stat, except humanity, has its own **soft caps** that reduce the efficiency
 | 11–98            | +2 Mana                 | 376 Mana                   |
 | 99               | Rounded to nearest 10   | 380 Mana                   |
 
-#### Endurance
+#### Endurance (Maximum Stamina Pool)
 
-| Endurance Level | Max Stamina Gain per Level | Max Value at End of Range |
+| Endurance Level  | Increase of maximum stamina per Level | Max Value at End of Range |
 |------------------|----------------------------|----------------------------|
-| 1–11             | +3 Stamina                 | 90 Stamina                 |
-| 12–41            | +2 Stamina                 | 150 Stamina                |
-| 42–98            | +1 Stamina                 | 207 Stamina                |
-| 99               | Rounded to nearest 10      | 210 Stamina                |
+| 1–11             | +3 Stamina                 | 120 Stamina                |
+| 12–41            | +2 Stamina                 | 180 Stamina                |
+| 42–98            | +1 Stamina                 | 237 Stamina                |
+| 99               | Rounded to nearest 10      | 240 Stamina                |
+
+#### Endurance (Dash Cooldown Time)
+
+| Endurance Level  | Dash cooldown reduction per Level | Max Value at End of Range |
+|------------------|-----------------------------------|---------------------------|
+| 1–11             | -0.016 seconds                    | 0.5 seconds               |
+| 12–41            | -0.0027 seconds                   | 0.416 seconds             |
+| 42-99            | -0 seconds                        | 0.416 seconds             |
 
 #### Strength
 
