@@ -120,8 +120,9 @@
 
 </details>
 
+---
 
-
-
-
+### 💰 Donations (Пожертвование) 💰
+You can support this project financially (Вы можете поддержать этот проект финансово)
+* PayPal - **raze.c0d3r@gmail.com**
 
