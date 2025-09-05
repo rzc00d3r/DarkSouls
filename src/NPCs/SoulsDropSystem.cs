@@ -13,83 +13,58 @@ namespace DarkSouls.NPCs
     {
         public static HashSet<int> NPCIDBlackList = new()
         {
+            #region Pre-Hardmode Bosses
+            NPCID.KingSlime,
+            NPCID.EyeofCthulhu,
+            
             NPCID.EaterofWorldsBody,
             NPCID.EaterofWorldsTail,
             NPCID.EaterofWorldsHead,
-
+            
             NPCID.BrainofCthulhu,
-            NPCID.Creeper,
-
-            NPCID.KingSlime,
-            NPCID.SlimeSpiked,
-
-            NPCID.EyeofCthulhu,
-            NPCID.ServantofCthulhu,
             NPCID.QueenBee,
-
+            NPCID.Deerclops,
+            
             NPCID.SkeletronHand,
             NPCID.SkeletronHead,
-
+            
             NPCID.WallofFlesh,
             NPCID.WallofFleshEye,
-            NPCID.TheHungry,
-            NPCID.TheHungryII,
-            NPCID.LeechBody,
-            NPCID.LeechHead,
-            NPCID.LeechTail,
+            #endregion
 
+            #region Hardmode Bosses
             NPCID.QueenSlimeBoss,
-            NPCID.QueenSlimeMinionBlue,
-            NPCID.QueenSlimeMinionPink,
-            NPCID.QueenSlimeMinionPurple,
-
+            
             NPCID.Retinazer,
             NPCID.Spazmatism,
-
+            
             NPCID.TheDestroyer,
             NPCID.TheDestroyerBody,
             NPCID.TheDestroyerTail,
-            NPCID.Probe,
-
+           
             NPCID.SkeletronPrime,
             NPCID.PrimeCannon,
             NPCID.PrimeLaser,
             NPCID.PrimeSaw,
             NPCID.PrimeVice,
-
+            
             NPCID.Plantera,
-            NPCID.PlanterasTentacle,
-
             NPCID.Golem,
             NPCID.GolemFistLeft,
             NPCID.GolemFistRight,
             NPCID.GolemHead,
             NPCID.GolemHeadFree,
-
+            
             NPCID.DukeFishron,
-            NPCID.Sharkron,
-            NPCID.Sharkron2,
-
             NPCID.HallowBoss,
-
             NPCID.CultistBoss,
-            NPCID.CultistBossClone,
-            NPCID.CultistDragonBody1,
-            NPCID.CultistDragonBody2,
-            NPCID.CultistDragonBody3,
-            NPCID.CultistDragonBody4,
-            NPCID.CultistDragonHead,
-            NPCID.CultistDragonTail,
-
+            
             NPCID.LunarTowerSolar,
             NPCID.SolarCrawltipedeBody,
             NPCID.SolarCrawltipedeBody,
             NPCID.SolarCrawltipedeTail,
-
             NPCID.LunarTowerVortex,
-
             NPCID.LunarTowerNebula,
-
             NPCID.LunarTowerStardust,
             NPCID.StardustCellSmall,
 
@@ -97,7 +72,74 @@ namespace DarkSouls.NPCs
             NPCID.MoonLordFreeEye,
             NPCID.MoonLordHand,
             NPCID.MoonLordHead,
-            NPCID.MoonLordLeechBlob
+            NPCID.MoonLordLeechBlob,
+            #endregion
+
+            #region Bosses Servants
+            NPCID.CultistBossClone,
+            NPCID.AncientDoom,
+            NPCID.AncientCultistSquidhead,
+            NPCID.QueenSlimeMinionPink,
+            NPCID.QueenSlimeMinionBlue,
+            NPCID.QueenSlimeMinionPurple,
+            NPCID.Creeper,
+            NPCID.LeechHead,
+            NPCID.LeechBody,
+            NPCID.LeechTail,
+            NPCID.CultistDragonHead,
+            NPCID.CultistDragonBody1,
+            NPCID.CultistDragonBody2,
+            NPCID.CultistDragonBody3,
+            NPCID.CultistDragonBody4,
+            NPCID.CultistDragonTail,
+            NPCID.PlanterasTentacle,
+            NPCID.Probe,
+            NPCID.TheHungry,
+            NPCID.TheHungryII,
+            NPCID.MoonLordFreeEye,
+            NPCID.ServantofCthulhu,
+            NPCID.SlimeSpiked,
+            NPCID.Sharkron,
+            NPCID.Sharkron2,
+            #endregion
+
+            #region Old One's Army
+            NPCID.DD2DrakinT2,
+            NPCID.DD2DrakinT3,
+            NPCID.DD2GoblinT1,
+            NPCID.DD2GoblinT2,
+            NPCID.DD2GoblinT3,
+            NPCID.DD2GoblinBomberT1,
+            NPCID.DD2GoblinBomberT2,
+            NPCID.DD2GoblinBomberT3,
+            NPCID.DD2JavelinstT1,
+            NPCID.DD2JavelinstT2,
+            NPCID.DD2JavelinstT3,
+            NPCID.DD2LightningBugT3,
+            NPCID.DD2WyvernT1,
+            NPCID.DD2WyvernT2,
+            NPCID.DD2WyvernT3,
+            NPCID.DD2KoboldWalkerT2,
+            NPCID.DD2KoboldWalkerT3,
+            NPCID.DD2KoboldFlyerT2,
+            NPCID.DD2KoboldFlyerT3,
+            NPCID.DD2WitherBeastT2,
+            NPCID.DD2WitherBeastT3,
+            NPCID.DD2OgreT2,
+            NPCID.DD2OgreT3,
+            NPCID.DD2DarkMageT1,
+            NPCID.DD2DarkMageT3,
+            NPCID.DD2SkeletonT1,
+            NPCID.DD2SkeletonT3,
+            #endregion
+
+            NPCID.Bee,
+            NPCID.BeeSmall,
+            NPCID.CursedSkull,
+            NPCID.Crab,
+            NPCID.FungiBulb,
+            NPCID.MeteorHead,
+            NPCID.Gnome
         };
 
         private static Dictionary<int, double> AbyssNPCSoulsMultipliers;

@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using DarkSouls.NPCs;
+using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
@@ -19,6 +20,9 @@ namespace DarkSouls.Common.ItemDropRules
                 return false;
 
             if (npc.SpawnedFromStatue || npc.friendly || npc.townNPC || npc.lifeMax <= 5 || (npc.aiStyle == 0 && npc.damage == 0))
+                return false;
+
+            if (SoulsDropSystem.NPCIDBlackList.Contains(npc.type))
                 return false;
 
             return true;
