@@ -142,8 +142,8 @@ Each stat, except humanity, has its own **soft caps** that reduce the efficiency
 
 | Amount of Humanity | Luck Increase per 1 Humanity | Maximum Value at the End of the Range |
 |--------------------|------------------------------|--------------------------------------|
-| 1–30               | +0.01 Luck                   | 0.3 Luck                             |
-| 31–99              | +0 Luck                     | 0.3 Luck                             |
+| 1–50               | +0.01 Luck                   | 0.5 Luck                             |
+| 51–99              | +0 Luck                     | 0.5 Luck                             |
 ---
 
 ### How to View Player Status
