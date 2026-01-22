@@ -536,7 +536,7 @@ namespace DarkSouls
             if (damageSoundTimer < damageSoundDelay)
                 return;
 
-            if (Main.myPlayer == Player.whoAmI && !ClientConfig.Instance.DisableOverrideHurtSounds)
+            if (!Main.dedServ && !ClientConfig.Instance.DisableOverrideHurtSounds)
             {
                 ActiveSound activeSound;
                 if (SoundEngine.TryGetActiveSound(lastDamageSoundSlotId, out activeSound))
@@ -706,4 +706,5 @@ namespace DarkSouls
         }
         #endregion
     }
+
 }
