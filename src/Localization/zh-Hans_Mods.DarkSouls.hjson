@@ -152,6 +152,11 @@ Configs: {
 			Label: 禁用 [c/D40000:Calamity Mod] 的缩放系统
 			Tooltip: 禁用 [c/D40000:Calamity Mod] 武器和工具的属性需求 (需求属性) 与属性加成 (属性加成)
 		}
+
+		DisableCrowdControlMultiplier: {
+			Label: 禁用群怪收益惩罚
+			Tooltip: 如果启用，在敌人数量极多时（如使用虫潮药水、混乱蜡烛等），灵魂掉落量将不再减少。
+		}
 	}
 
 	ClientConfig: {

@@ -24,6 +24,9 @@ namespace DarkSouls.Config
         [Increment(5)]
         public int LevelUpCostMultiplierPercent = 100;
 
+        [DefaultValue(false)]
+        public bool DisableCrowdControlMultiplier = false;
+
         [Header("Compatibility")]
         [DefaultValue(false)]
         public bool DisableVanillaDashLock = false;

@@ -152,6 +152,11 @@ Configs: {
 			Label: Disable Scaling System for [c/D40000:Calamity Mod]
 			Tooltip: Disables stat requirements (ReqParam) and stat bonuses (ParamBonus) for weapons and tools from [c/D40000:Calamity Mod]
 		}
+
+		DisableCrowdControlMultiplier: {
+			Label: Disable Crowd Control Penalty
+			Tooltip: If enabled, soul yields will NOT be reduced when there are huge amounts of enemies (Zerg Potion, Chaos Candle, etc.)
+		}
 	}
 
 	ClientConfig: {

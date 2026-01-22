@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
+﻿using DarkSouls.Systems;
+using DarkSouls.Utils;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-
-using DarkSouls.Systems;
-using DarkSouls.Utils;
 
 namespace DarkSouls.NPCs
 {
@@ -177,6 +175,13 @@ namespace DarkSouls.NPCs
             if (souls <= 0)
                 return;
 
+            float soulsMultiplier = 1f;
+
+            if (!boss && !Config.ServerConfig.Instance.DisableCrowdControlMultiplier)
+                soulsMultiplier = GetCrowdControlMultiplier();
+
+            souls = (int)(souls * soulsMultiplier);
+
             if (Main.dedServ)
             {
                 ModPacket packet = Mod.GetPacket();
@@ -189,6 +194,29 @@ namespace DarkSouls.NPCs
             }
             else // single player
                 dsPlayer.AddSouls(souls);
+        }
+
+        private float GetCrowdControlMultiplier()
+        {
+            int activeHostileNPCs = 0;
+
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC n = Main.npc[i];
+                if (n.active && !n.friendly && !n.townNPC && n.lifeMax > 5 && n.damage > 0)
+                    activeHostileNPCs++;
+            }
+
+            // 15-20 - ванилка
+            // 40 - водяной свеча, боевое зелье
+            float standardCap = 40f;
+
+            if (activeHostileNPCs <= standardCap)
+                return 1.0f;
+
+            // Боевое зелье (40 мобов) -> множитель 1. (заработок x2)
+            // Зелье Зергов (90+ мобов) -> множитель 0.44 (заработок +- как и в первом случае)
+            return standardCap / (float)activeHostileNPCs;
         }
 
         public static bool AddNPCIDToBlacklist(int npcID)

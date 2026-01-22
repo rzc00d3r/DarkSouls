@@ -226,7 +226,7 @@ namespace DarkSouls
                 }
             }
             #endregion
-            
+
             #region Reset Accessories Flags
             CloranthyRingEffect = false;
             #endregion
@@ -264,11 +264,11 @@ namespace DarkSouls
                     //}
                     case dashLeft when Player.velocity.X > -dashVelocity:
                     case dashRight when Player.velocity.X < dashVelocity:
-                    {
-                        float dashDirection = dashDir == dashRight ? 1 : -1;
-                        newVelocity.X = dashDirection * dashVelocity;
-                        break;
-                    }
+                        {
+                            float dashDirection = dashDir == dashRight ? 1 : -1;
+                            newVelocity.X = dashDirection * dashVelocity;
+                            break;
+                        }
                     default:
                         return;
                 }
@@ -392,7 +392,7 @@ namespace DarkSouls
             // Handling click on the location of bloodstain
             if (currentBloodstainProjectile != -1 && Main.mouseRight && Main.mouseRightRelease && Main.netMode != NetmodeID.Server)
             {
-                if (IsBloodstainReachable())
+                if (IsBloodstainReachable() && !Player.dead)
                 {
                     Projectile proj = Main.projectile[currentBloodstainProjectile];
                     Vector2 mouseWorld = Main.MouseWorld;
@@ -512,19 +512,15 @@ namespace DarkSouls
             mana.Base = manaBonus;
         }
 
-        public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers)
         {
-            modifiers.FinalDamage *= (float)(1f - StatFormulas.GetDefenseByResistance(dsResistance));
-        }
-
-        public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
-        {
-            modifiers.FinalDamage *= (float)(1f - StatFormulas.GetDefenseByResistance(dsResistance));
+            modifiers.FinalDamage *= 1f - StatFormulas.GetDefenseByResistance(dsResistance);
         }
 
         public override void ModifyLuck(ref float luck)
         {
-            luck += Math.Clamp(dsHumanity / 100f, 0f, 0.5f);
+            float bonus = dsHumanity * (0.15f / 99f);
+            luck += Math.Clamp(bonus, 0f, 0.15f);
         }
 
         public override void OnConsumeMana(Item item, int manaConsumed)
@@ -540,7 +536,7 @@ namespace DarkSouls
             if (damageSoundTimer < damageSoundDelay)
                 return;
 
-            if (!Main.dedServ && !ClientConfig.Instance.DisableOverrideHurtSounds)
+            if (Main.myPlayer == Player.whoAmI && !ClientConfig.Instance.DisableOverrideHurtSounds)
             {
                 ActiveSound activeSound;
                 if (SoundEngine.TryGetActiveSound(lastDamageSoundSlotId, out activeSound))
