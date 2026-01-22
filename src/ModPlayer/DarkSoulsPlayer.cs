@@ -184,9 +184,7 @@ namespace DarkSouls
                 ModContent.GetInstance<DarkSoulsStatsUISystem>().ToggleUI();
             else if (DarkSouls.TouchBloodstainKey.JustPressed)
             {
-                if (IsBloodstainReachable())
-                    TouchBloodstain();
-                else
+                if (!TouchBloodstain() && !Player.dead)
                     Main.NewText(Language.GetTextValue("Mods.DarkSouls.BloodstainErrorMessage"), Color.DarkRed);
             }
         }
@@ -264,11 +262,11 @@ namespace DarkSouls
                     //}
                     case dashLeft when Player.velocity.X > -dashVelocity:
                     case dashRight when Player.velocity.X < dashVelocity:
-                        {
-                            float dashDirection = dashDir == dashRight ? 1 : -1;
-                            newVelocity.X = dashDirection * dashVelocity;
-                            break;
-                        }
+                    {
+                        float dashDirection = dashDir == dashRight ? 1 : -1;
+                        newVelocity.X = dashDirection * dashVelocity;
+                        break;
+                    }
                     default:
                         return;
                 }
@@ -392,13 +390,10 @@ namespace DarkSouls
             // Handling click on the location of bloodstain
             if (currentBloodstainProjectile != -1 && Main.mouseRight && Main.mouseRightRelease && Main.netMode != NetmodeID.Server)
             {
-                if (IsBloodstainReachable() && !Player.dead)
-                {
-                    Projectile proj = Main.projectile[currentBloodstainProjectile];
-                    Vector2 mouseWorld = Main.MouseWorld;
-                    if (proj.Hitbox.Contains(mouseWorld.ToPoint()))
-                        TouchBloodstain();
-                }
+                Projectile proj = Main.projectile[currentBloodstainProjectile];
+                Vector2 mouseWorld = Main.MouseWorld;
+                if (proj.Hitbox.Contains(mouseWorld.ToPoint()))
+                    TouchBloodstain();
             }
 
             maxStamina = StatFormulas.GetStaminaByEndurance(dsEndurance);
@@ -669,15 +664,15 @@ namespace DarkSouls
             return false;
         }
 
-        public void TouchBloodstain()
+        public bool TouchBloodstain()
         {
-            if (currentBloodstainProjectile == -1)
-                return;
+            if (currentBloodstainProjectile == -1 || Player.dead || !IsBloodstainReachable())
+                return false;
 
             Projectile proj = Main.projectile[currentBloodstainProjectile];
 
             if (!proj.active || proj.type != ModContent.ProjectileType<BloodstainProjectile>())
-                return;
+                return false;
 
             Bloodstain bloodstain = bloodstains.FirstOrDefault(s => s.worldGUID == Main.ActiveWorldFileData.UniqueId.ToString());
             if (bloodstain != null)
@@ -689,7 +684,11 @@ namespace DarkSouls
                 dsSouls += bloodstain.souls;
                 dsHumanity += bloodstain.humanity;
                 bloodstains.RemoveAll(x => x.worldGUID == Main.ActiveWorldFileData.UniqueId.ToString());
+
+                return true;
             }
+
+            return false;
         }
 
         public bool IsBloodstainReachable(float reachDistance = 200f)
@@ -706,5 +705,4 @@ namespace DarkSouls
         }
         #endregion
     }
-
 }
