@@ -1,13 +1,55 @@
 ﻿using System.Collections.Generic;
 
 using Terraria;
+//using Terraria.ModLoader;
 using Terraria.ID;
 
 using DarkSouls.Core;
+//using DarkSouls.Utils;
 using static DarkSouls.Constants.Constants;
 
 namespace DarkSouls.DataStructures
 {
+    //public class DarkSoulsScalingSystemDebug : ModSystem
+    //{
+    //    public override void PostSetupContent()
+    //    {
+    //        foreach (var kv in DarkSoulsScalingSystem.AllWeaponsParams)
+    //        {
+    //            Item item = ContentSamples.ItemsByType[kv.Key];
+    //            var weaponParams = kv.Value;
+
+    //            int maxReq = weaponParams.ReqStrength;
+    //            DamageClass expectedClass = DamageClass.Melee;
+
+    //            if (weaponParams.ReqDexterity > maxReq)
+    //            {
+    //                maxReq = weaponParams.ReqDexterity;
+    //                expectedClass = DamageClass.Ranged;
+    //            }
+
+    //            if (weaponParams.ReqIntelligence > maxReq)
+    //            {
+    //                maxReq = weaponParams.ReqIntelligence;
+    //                expectedClass = DamageClass.Magic;
+    //            }
+
+    //            if (weaponParams.ReqFaith > maxReq)
+    //            {
+    //                maxReq = weaponParams.ReqFaith;
+    //                expectedClass = DamageClass.Summon;
+    //            }
+
+    //            if (!item.DamageType.CountsAsClass(expectedClass))
+    //            {
+    //                string itemName = item.ModItem?.FullName ?? item.Name;
+    //                LoggingUtils.Info("DarkSoulsScalingSystemDebug",
+    //                    $"Item '{itemName}', {item.DamageType.Name}, WeaponParams ({weaponParams.ToString()})");
+    //            }
+    //        }
+    //    }
+    //}
+
     public static class DarkSoulsScalingSystem
     {
         // Set by LocalizationUpdater
@@ -80,6 +122,8 @@ namespace DarkSouls.DataStructures
                         $"{FaithDisplayName}: {ScalingGradeToString(FaithScalingGrade)}";
                 return text;
             }
+
+            public new string ToString() => $"{ReqStrength}, {ReqDexterity}, {ReqIntelligence}, {ReqFaith}";
         }
 
         public readonly struct DamageBonuses
@@ -178,13 +222,13 @@ namespace DarkSouls.DataStructures
             {ItemID.WhitePhasesaber, new(12, 12, 0, 0, ScalingGrade.D, ScalingGrade.B) },
             {ItemID.YellowPhasesaber, new(12, 12, 0, 0, ScalingGrade.D, ScalingGrade.C) },
 
-            {ItemID.BlueRocket, new(0, 5, 0, 0, dexterityScalingGrade: ScalingGrade.S) },
-            {ItemID.GreenRocket, new(0, 5, 0, 0, dexterityScalingGrade: ScalingGrade.S) },
-            {ItemID.RedRocket, new(0, 5, 0, 0, dexterityScalingGrade: ScalingGrade.S) },
-            {ItemID.YellowRocket, new(0, 5, 0, 0, dexterityScalingGrade: ScalingGrade.S) },
+            {ItemID.BlueRocket, new(dexterityScalingGrade: ScalingGrade.S) },
+            {ItemID.GreenRocket, new(dexterityScalingGrade: ScalingGrade.S) },
+            {ItemID.RedRocket, new(dexterityScalingGrade: ScalingGrade.S) },
+            {ItemID.YellowRocket, new(dexterityScalingGrade: ScalingGrade.S) },
 
-            {ItemID.Bomb, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
-            {ItemID.BombFish, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.Bomb, new(dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.BombFish, new(dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.Bone, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.BoneJavelin, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.BonePickaxe, new(3, 0, 0, 0) },
@@ -195,9 +239,9 @@ namespace DarkSouls.DataStructures
             {ItemID.BorealWoodBow, new() },
             {ItemID.BorealWoodHammer, new()},
             {ItemID.BorealWoodSword, new() },
-            {ItemID.BouncyBomb, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.S) },
-            {ItemID.BouncyDynamite, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.S) },
-            {ItemID.BouncyGrenade, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.S) },
+            {ItemID.BouncyBomb, new(dexterityScalingGrade: ScalingGrade.S) },
+            {ItemID.BouncyDynamite, new(dexterityScalingGrade: ScalingGrade.S) },
+            {ItemID.BouncyGrenade, new(dexterityScalingGrade: ScalingGrade.S) },
             {ItemID.DD2SquireDemonSword, new(30, 8, 0, 0, ScalingGrade.C) },
             {ItemID.BreakerBlade, new(20, 5, 0, 0, ScalingGrade.B) },
             {ItemID.BreathingReed, new(3, 3, 0, 0) },
@@ -280,12 +324,12 @@ namespace DarkSouls.DataStructures
             {ItemID.DemonScythe, new(2, 2, 16, 0, intelligenceScalingGrade: ScalingGrade.D) },
             {ItemID.StormTigerStaff, new(2, 2, 0, 36, faithScalingGrade: ScalingGrade.C) },
             {ItemID.DiamondStaff, new(2, 2, 6, 0, intelligenceScalingGrade: ScalingGrade.D) },
-            {ItemID.DirtBomb, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.DirtBomb, new(dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.Drax, new(9, 0, 0, 0) },
             {ItemID.DripplerFlail, new(15, 3, 0, 0, ScalingGrade.C) },
-            {ItemID.DryBomb, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.DryBomb, new(dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.SwordWhip, new(2, 3, 0, 24, faithScalingGrade: ScalingGrade.C) },
-            {ItemID.Dynamite, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.Dynamite, new(dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.EbonwoodBow, new() },
             {ItemID.EbonwoodHammer, new() },
             {ItemID.EbonwoodSword, new() },
@@ -339,7 +383,7 @@ namespace DarkSouls.DataStructures
             {ItemID.GoldenShower, new(2, 2, 15, 0, intelligenceScalingGrade: ScalingGrade.D) },
             {ItemID.GolemFist, new(30, 2, 0, 0, ScalingGrade.A) },
             {ItemID.Gradient, new(13, 13, 0, 0, ScalingGrade.C, ScalingGrade.C) },
-            {ItemID.GravediggerShovel, new(2, 6, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
+            {ItemID.GravediggerShovel, new(6, 2, 0, 0, strengthScalingGrade: ScalingGrade.D) },
             {ItemID.ZapinatorGray, new(2, 2, 14, 0, intelligenceScalingGrade: ScalingGrade.D) },
             {ItemID.Grenade, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.GrenadeLauncher, new(2, 26, 0, 0, dexterityScalingGrade: ScalingGrade.C) },
@@ -357,7 +401,7 @@ namespace DarkSouls.DataStructures
             {ItemID.HellwingBow, new(2, 12, 0, 0, dexterityScalingGrade: ScalingGrade.D) },
             {ItemID.HiveFive, new(7, 7, 0, 0, ScalingGrade.D, ScalingGrade.D) },
             {ItemID.HolyWater, new() },
-            {ItemID.HoneyBomb, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.HoneyBomb, new(dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.HornetStaff, new(2, 2, 0, 8, faithScalingGrade: ScalingGrade.D) },
             {ItemID.HoundiusShootius, new(2, 2, 0, 10, faithScalingGrade: ScalingGrade.D) },
             {ItemID.IceBlade, new(6, 2, 2, 0, ScalingGrade.E, ScalingGrade.None, ScalingGrade.E) },
@@ -387,7 +431,7 @@ namespace DarkSouls.DataStructures
             {ItemID.LaserMachinegun, new(4, 2, 32, 0, intelligenceScalingGrade: ScalingGrade.B) },
             {ItemID.LaserRifle, new(2, 2, 16, 0, intelligenceScalingGrade: ScalingGrade.C) },
             {ItemID.LastPrism, new(2, 2, 50, 0, intelligenceScalingGrade: ScalingGrade.A) },
-            {ItemID.LavaBomb, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.LavaBomb, new(dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.LeadBow, new() },
             {ItemID.LeadBroadsword, new() },
             {ItemID.LeadHammer, new() },
@@ -470,7 +514,7 @@ namespace DarkSouls.DataStructures
             {ItemID.FairyQueenMagicItem, new(2, 2, 35, 0, intelligenceScalingGrade: ScalingGrade.A) },
             {ItemID.NightmarePickaxe, new(4, 0, 0, 0) },
             {ItemID.NimbusRod, new(1, 1, 14, 0, intelligenceScalingGrade: ScalingGrade.D) },
-            {ItemID.NorthPole, new(2, 2, 34, 0, intelligenceScalingGrade: ScalingGrade.B) },
+            {ItemID.NorthPole, new(24, 9, 0, 0, strengthScalingGrade: ScalingGrade.B, dexterityScalingGrade: ScalingGrade.E) },
             {ItemID.ObsidianSwordfish, new(22, 5, 0, 0, ScalingGrade.C, ScalingGrade.D) },
             {ItemID.OnyxBlaster, new(6, 14, 0, 0, dexterityScalingGrade: ScalingGrade.C) },
             {ItemID.OpticStaff, new(2, 2, 0, 20, dexterityScalingGrade: ScalingGrade.C) },
@@ -504,7 +548,7 @@ namespace DarkSouls.DataStructures
             {ItemID.PsychoKnife, new(22, 10, 0, 0, ScalingGrade.A, ScalingGrade.C) },
             {ItemID.PulseBow, new(4, 24, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.PurpleClubberfish, new(12, 5, 0, 0, ScalingGrade.A, ScalingGrade.D) },
-            {ItemID.Pwnhammer, new(18, 2, 0, 0, ScalingGrade.B, ScalingGrade.E) },
+            {ItemID.Pwnhammer, new(0, 0, 0, 0, ScalingGrade.B, ScalingGrade.E) },
             {ItemID.PygmyStaff, new(2, 2, 0, 26, faithScalingGrade: ScalingGrade.B) },
             {ItemID.QuadBarrelShotgun, new(3, 10, 0, 0, dexterityScalingGrade: ScalingGrade.C) },
             {ItemID.QueenSpiderStaff, new(1, 1, 0, 18, faithScalingGrade: ScalingGrade.D) },
@@ -533,7 +577,7 @@ namespace DarkSouls.DataStructures
             {ItemID.SanguineStaff, new(2, 2, 0, 17, faithScalingGrade: ScalingGrade.D) },
             {ItemID.SapphireStaff, new(2, 2, 6, 0, intelligenceScalingGrade: ScalingGrade.E) },
             {ItemID.SawtoothShark, new(8, 4, 0, 0, ScalingGrade.B, ScalingGrade.D) },
-            {ItemID.ScarabBomb, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.ScarabBomb, new(dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.ScourgeoftheCorruptor, new(25, 8, 0, 0, ScalingGrade.B, ScalingGrade.C) },
             {ItemID.Seedler, new(24, 6, 0, 0, ScalingGrade.B, ScalingGrade.D) },
             {ItemID.BouncingShield, new(12, 12, 0, 0, ScalingGrade.C, ScalingGrade.C) },
@@ -561,7 +605,7 @@ namespace DarkSouls.DataStructures
             {ItemID.SlimeStaff, new(1, 1, 0, 7, faithScalingGrade: ScalingGrade.E) },
             {ItemID.ThornWhip, new(2, 2, 0, 10, faithScalingGrade: ScalingGrade.D) },
             {ItemID.SniperRifle, new(8, 30, 0, 0, dexterityScalingGrade: ScalingGrade.S) },
-            {ItemID.Snowball, new(3, 3, 0, 0, ScalingGrade.B, ScalingGrade.B) },
+            {ItemID.Snowball, new(dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.SnowballCannon, new(2, 8, 0, 0, dexterityScalingGrade: ScalingGrade.C) },
             {ItemID.SnowballLauncher, new() },
             {ItemID.SnowmanCannon, new(6, 30, 0, 0, dexterityScalingGrade: ScalingGrade.A) },
@@ -584,9 +628,9 @@ namespace DarkSouls.DataStructures
             {ItemID.Starfury, new(9, 2, 4, 0, ScalingGrade.E, ScalingGrade.None, ScalingGrade.E) },
             {ItemID.PiercingStarlight, new(18, 20, 0, 0, ScalingGrade.C, ScalingGrade.A) },
             {ItemID.SparkleGuitar, new(3, 5, 32, 0, intelligenceScalingGrade: ScalingGrade.B) },
-            {ItemID.StickyBomb, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
-            {ItemID.DirtStickyBomb, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
-            {ItemID.StickyDynamite, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.StickyBomb, new(dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.DirtStickyBomb, new(dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.StickyDynamite, new(dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.StickyGrenade, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.ThunderSpear, new(6, 4, 0, 0, ScalingGrade.E) },
             {ItemID.StylistKilLaKillScissorsIWish, new(6, 4, 0, 0, ScalingGrade.E) },
@@ -641,7 +685,7 @@ namespace DarkSouls.DataStructures
             {ItemID.Uzi, new(2, 18, 0, 0, dexterityScalingGrade: ScalingGrade.C) },
             {ItemID.ValkyrieYoyo, new(15, 15, 0, 0, ScalingGrade.C, ScalingGrade.C, saturation: 80) },
             {ItemID.Valor, new(8, 8, 0, 0, ScalingGrade.D, ScalingGrade.D) },
-            {ItemID.VampireFrogStaff, new(1, 1, 10, 0, intelligenceScalingGrade: ScalingGrade.D) },
+            {ItemID.VampireFrogStaff, new(1, 1, 0, 10, faithScalingGrade: ScalingGrade.E) },
             {ItemID.VampireKnives, new(25, 10, 0, 0, ScalingGrade.A, ScalingGrade.D, saturation: 50) },
             {ItemID.VenomStaff, new(2, 2, 24, 0, intelligenceScalingGrade: ScalingGrade.C) },
             {ItemID.VenusMagnum, new(2, 27, 0, 0, dexterityScalingGrade: ScalingGrade.C) },
@@ -654,7 +698,7 @@ namespace DarkSouls.DataStructures
             {ItemID.WaspGun, new(2, 2, 28, 0, intelligenceScalingGrade: ScalingGrade.C) },
             {ItemID.WaterBolt, new(2, 2, 12, 0, intelligenceScalingGrade: ScalingGrade.D) },
             {ItemID.WeatherPain, new(1, 1, 10, 0, intelligenceScalingGrade: ScalingGrade.E) },
-            {ItemID.WetBomb, new(2, 5, 0, 0, dexterityScalingGrade: ScalingGrade.B) },
+            {ItemID.WetBomb, new(dexterityScalingGrade: ScalingGrade.B) },
             {ItemID.WoodenBoomerang, new() },
             {ItemID.WoodenBow, new() },
             {ItemID.WoodenHammer, new() },
