@@ -241,7 +241,7 @@ namespace DarkSouls.DataStructures
             RegisterWeapon("Terratomere", new(50, 12, 0, 0, ScalingGrade.S, ScalingGrade.B), true);
             RegisterWeapon("TerrorBlade", new(54, 12, 0, 0, ScalingGrade.A, ScalingGrade.B), true);
             RegisterWeapon("VoidEdge", new(55, 10, 0, 0, ScalingGrade.A, ScalingGrade.B), true);
-
+            
             // Shortswords
             RegisterWeapon("CosmicShiv", new(54, 16, 0, 0, ScalingGrade.A, ScalingGrade.B), true);
             RegisterWeapon("ElementalShiv", new(38, 12, 0, 0, ScalingGrade.A, ScalingGrade.C), true);
@@ -259,6 +259,7 @@ namespace DarkSouls.DataStructures
             RegisterWeapon("ElementalLance", new(38, 12, 0, 0, ScalingGrade.A, ScalingGrade.C), true);
             RegisterWeapon("GildedProboscis", new(42, 12, 0, 0, ScalingGrade.A, ScalingGrade.B), true);
             RegisterWeapon("Nadir", new(55, 18, 0, 0, ScalingGrade.A, ScalingGrade.A), true);
+            RegisterWeapon("SkytideDragoon", new(48, 14, 0, 0, ScalingGrade.A, ScalingGrade.B), true);
 
             // Boomerangs
             RegisterWeapon("SeekingScorcher", new(42, 18, 0, 0, ScalingGrade.A, ScalingGrade.B), true);
@@ -455,7 +456,6 @@ namespace DarkSouls.DataStructures
             RegisterWeapon("AngelicShotgun", new(3, 57, 0, 0, dexterityScalingGrade: ScalingGrade.B), true);
             RegisterWeapon("AntiMaterielRifle", new(6, 65, 0, 0, dexterityScalingGrade: ScalingGrade.S, saturation: 300f), true);
             RegisterWeapon("Auralis", new(5, 55, 0, 0, dexterityScalingGrade: ScalingGrade.A), true);
-            RegisterWeapon("ClaretCannon", new(3, 61, 0, 0, dexterityScalingGrade: ScalingGrade.A), true);
             RegisterWeapon("CorinthPrime", new(3, 60, 0, 0, dexterityScalingGrade: ScalingGrade.B), true);
             RegisterWeapon("FetidEmesis", new(3, 62, 0, 0, dexterityScalingGrade: ScalingGrade.A), true);
             RegisterWeapon("GoldenEagle", new(2, 51, 0, 0, dexterityScalingGrade: ScalingGrade.A), true);
@@ -475,7 +475,6 @@ namespace DarkSouls.DataStructures
             RegisterWeapon("Shredder", new(3, 48, 0, 0, dexterityScalingGrade: ScalingGrade.B), true);
             RegisterWeapon("SomaPrime", new(4, 76, 0, 0, dexterityScalingGrade: ScalingGrade.A), true);
             RegisterWeapon("Spyker", new(3, 59, 0, 0, dexterityScalingGrade: ScalingGrade.A), true);
-            RegisterWeapon("SkytideDragoon", new(3, 60, 0, 0, dexterityScalingGrade: ScalingGrade.A), true);
             RegisterWeapon("SurgeDriver", new(6, 70, 0, 0, dexterityScalingGrade: ScalingGrade.A), true);
             RegisterWeapon("Svantechnical", new(3, 77, 0, 0, dexterityScalingGrade: ScalingGrade.A), true);
             RegisterWeapon("TyrannysEnd", new(5, 70, 0, 0, dexterityScalingGrade: ScalingGrade.S, saturation: 500f), true);
@@ -613,7 +612,7 @@ namespace DarkSouls.DataStructures
             RegisterWeapon("ArcticBearPaw", new(2, 0, 25, 0, intelligenceScalingGrade: ScalingGrade.C));
             RegisterWeapon("BelchingSaxophone", new(2, 0, 21, intelligenceScalingGrade: ScalingGrade.C));
             RegisterWeapon("ClothiersWrath", new(2, 0, 17, 0, intelligenceScalingGrade: ScalingGrade.D));
-            RegisterWeapon("CosmicRainbow", new(2, 42, 0, 0, intelligenceScalingGrade: ScalingGrade.B));
+            RegisterWeapon("CosmicRainbow", new(2, 0, 42, 0, intelligenceScalingGrade: ScalingGrade.B));
             RegisterWeapon("HadalUrn", new(2, 0, 33, 0, intelligenceScalingGrade: ScalingGrade.C));
             #endregion
             #region Post-Moon Lord
@@ -763,7 +762,7 @@ namespace DarkSouls.DataStructures
             RegisterWeapon("HivePod", new(2, 0, 0, 31, faithScalingGrade: ScalingGrade.C));
             RegisterWeapon("OrthoceraShell", new(2, 0, 0, 19, faithScalingGrade: ScalingGrade.C));
             RegisterWeapon("PulseTurretRemote", new(2, 0, 0, 32, faithScalingGrade: ScalingGrade.C));
-            RegisterWeapon("SpikecragStaff", new(2, 0, 34, 0, faithScalingGrade: ScalingGrade.C));
+            RegisterWeapon("SpikecragStaff", new(2, 0, 0, 34, faithScalingGrade: ScalingGrade.C));
 
             // Other
             RegisterWeapon("BorealisBomber", new(2, 0, 0, 31, faithScalingGrade: ScalingGrade.C));
@@ -1035,8 +1034,10 @@ namespace DarkSouls.DataStructures
             RegisterWeapon("StarStruckWater", new());
             #endregion
             #region Post-Moon Lord
+            RegisterWeapon("ClaretCannon", new());
             RegisterWeapon("RelicOfDeliverance", new());
             RegisterWeapon("StratusSphere", new());
+
             #endregion
             #endregion
 
