@@ -8,7 +8,7 @@ namespace DarkSouls.Utils
         {
             if (ModLoader.TryGetMod("CalamityMod", out var calamityMod))
                 return (bool)calamityMod.Call("GetBossDowned", bossName);
-            ConsoleUtils.Error("ModSupportUtils", $"GetCalamityBossDowned - CalamityMod is not enabled!");
+            LoggingUtils.Error("ModSupportUtils", $"GetCalamityBossDowned - CalamityMod is not enabled!");
             return false;
         }
     }

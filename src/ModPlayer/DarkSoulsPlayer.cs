@@ -453,33 +453,36 @@ namespace DarkSouls
 
         public override void PostUpdateBuffs()
         {
-            // This code fragment handles the first apply of debuffs
-            // GlobalBuff.ReApply function overload (DSBuffChanges.cs file) is used to handle the reapplication of debuffs
-            Dictionary<int, int> currentDebuffs = new();
-            List<int> playerBuffs = Player.buffType.ToList();
-
-            foreach (int debuffType in DarkSoulsBuffChanges.terrariaDebuff)
+            for (int i = 0; i < Player.buffType.Length; i++)
             {
-                int debuffIndex = playerBuffs.FindIndex(x => x == debuffType);
-                if (debuffIndex == -1)
+                int buffType = Player.buffType[i];
+
+                if (buffType <= 0)
+                    continue;
+
+                if (!Main.debuff[buffType])
+                    continue;
+
+                if (buffType == BuffID.PotionSickness)
+                    continue;
+
+                if (Player.buffTime[i] <= 2)
+                    continue;
+
+                if (Player.buffTime[i] <= 0)
                 {
-                    newDebuffs[debuffType] = true;
+                    if (newDebuffs.ContainsKey(buffType))
+                        newDebuffs[buffType] = true;
                     continue;
                 }
 
-                int debuffTime = Player.buffTime[debuffIndex];
-                if (debuffTime <= 0)
-                {
-                    newDebuffs[debuffType] = true;
-                    continue;
-                }
-
-                bool isNew = newDebuffs.GetValueOrDefault(debuffType, false);
+                bool isNew = !newDebuffs.ContainsKey(buffType) || newDebuffs[buffType];
 
                 if (isNew)
                 {
-                    Player.buffTime[debuffIndex] = (int)(Player.buffTime[debuffIndex] * (1f - StatFormulas.GetDebuffsResistanceByResistance(dsResistance)));
-                    newDebuffs[debuffType] = false;
+                    float resistance = StatFormulas.GetDebuffsResistanceByResistance(dsResistance);
+                    Player.buffTime[i] = (int)(Player.buffTime[i] * (1f - resistance));
+                    newDebuffs[buffType] = false;
                 }
             }
         }

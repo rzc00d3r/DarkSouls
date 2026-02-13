@@ -1,9 +1,10 @@
-﻿using DarkSouls.Utils;
-using System.Collections.Generic;
-using System.Security.Cryptography;
+﻿using System.Collections.Generic;
+
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+
+using DarkSouls.Utils;
 
 namespace DarkSouls.Systems
 {
@@ -146,7 +147,7 @@ namespace DarkSouls.Systems
 
             // Post-Moon Lord
             _bosses[CalamityBoss.ProfanedGuardians] = new BossData("profaned guardians", CalamityNPCID.GetCalamityNPCIDByName("ProfanedGuardianCommander"), false);
-            _bosses[CalamityBoss.Dragonfolly] = new BossData("dragonfolly", CalamityNPCID.GetCalamityNPCIDByName("Bumblefuck"), false);
+            _bosses[CalamityBoss.Dragonfolly] = new BossData("dragonfolly", CalamityNPCID.GetCalamityNPCIDByName("Dragonfolly"), false);
             _bosses[CalamityBoss.ProvidenceTheProfanedGoddess] = new BossData("providence", CalamityNPCID.GetCalamityNPCIDByName("Providence"), false);
             _bosses[CalamityBoss.StormWeaver] = new BossData("storm weaver", CalamityNPCID.GetCalamityNPCIDByName("StormWeaverHead"), false);
             _bosses[CalamityBoss.CeaselessVoid] = new BossData("ceaseless void", CalamityNPCID.GetCalamityNPCIDByName("CeaselessVoid"), false);

@@ -224,7 +224,7 @@ namespace DarkSouls.NPCs
             if (NPCIDBlackList.Contains(npcID))
             {
                 NPC npc = new(); npc.SetDefaults(npcID);
-                ConsoleUtils.Error("SoulsDropSystem", $"Same key has already been added ({npcID}, {npc.TypeName})");
+                LoggingUtils.Error("SoulsDropSystem", $"Same key has already been added ({npcID}, {npc.TypeName})");
                 return false;
             }
             NPCIDBlackList.Add(npcID);
@@ -235,7 +235,7 @@ namespace DarkSouls.NPCs
         {
             if (DarkSouls.CalamityModIsEnabled)
             {
-                ConsoleUtils.Info("SoulsDropSystem", "Initialize for CalamityMod");
+                LoggingUtils.Info("SoulsDropSystem", "Initialize for CalamityMod");
 
                 AbyssNPCSoulsMultipliers = new()
                 {
@@ -265,7 +265,6 @@ namespace DarkSouls.NPCs
                 AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("DankCreeper"));
                 AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("DarkHeart"));
                 AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("HiveBlob"));
-                AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("HiveBlob2"));
 
                 AddNPCIDToBlacklist(CalamityDownedBossSystem.ThePerforators.ID);
                 AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("PerforatorHeadSmall"));
@@ -337,7 +336,6 @@ namespace DarkSouls.NPCs
                 AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("ProfanedRocks"));
 
                 AddNPCIDToBlacklist(CalamityDownedBossSystem.Dragonfolly.ID);
-                AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("Bumblefuck2"));
 
                 AddNPCIDToBlacklist(CalamityDownedBossSystem.ProvidenceTheProfanedGoddess.ID);
                 AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("ProvSpawnDefense"));
@@ -363,9 +361,6 @@ namespace DarkSouls.NPCs
                 AddNPCIDToBlacklist(CalamityDownedBossSystem.TheDevourerOfGods.ID);
                 AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("DevourerofGodsBody"));
                 AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("DevourerofGodsTail"));
-                AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("CosmicGuardianHead"));
-                AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("CosmicGuardianBody"));
-                AddNPCIDToBlacklist(CalamityNPCID.GetCalamityNPCIDByName("CosmicGuardianTail"));
 
                 AddNPCIDToBlacklist(CalamityDownedBossSystem.YharonDragonOfRebirth.ID);
                 
