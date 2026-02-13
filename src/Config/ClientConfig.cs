@@ -48,7 +48,7 @@ namespace DarkSouls.Config
             }
             catch (Exception ex)
             {
-                ConsoleUtils.WriteLine($"[DarkSouls] Failed to read value with name \"{valueName}\" from JSON: {ex}", ConsoleColor.DarkRed);
+                LoggingUtils.Error("ClientConfig", $"Failed to read value with name \"{valueName}\" from JSON: {ex}");
             }
 
             return false;

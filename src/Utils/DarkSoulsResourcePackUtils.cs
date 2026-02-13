@@ -1,13 +1,13 @@
-﻿
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
-using Terraria;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 
+using Newtonsoft.Json.Linq;
+
+using Terraria;
 using Terraria.ModLoader;
 
 namespace DarkSouls.Utils
@@ -103,12 +103,12 @@ namespace DarkSouls.Utils
 
                 if (File.Exists(targetPath))
                 {
-                    ConsoleUtils.WriteLine($"[DarkSouls] Failed to rename {fileName}, file {targetName} already exists!", ConsoleColor.DarkRed);
+                    LoggingUtils.Info("DarkSoulsResourcePack", $"Failed to rename {fileName}, file {targetName} already exists!");
                     continue;
                 }
 
                 File.Move(filePath, targetPath);
-                ConsoleUtils.WriteLine($"[DarkSouls] Renamed {fileName} -> {targetName}", ConsoleColor.DarkGreen);
+                LoggingUtils.Info("DarkSoulsResourcePack", $"Renamed {fileName} -> {targetName}");
             }
         }
 
@@ -142,12 +142,12 @@ namespace DarkSouls.Utils
 
                 if (File.Exists(targetPath))
                 {
-                    ConsoleUtils.WriteLine($"[DarkSouls] Failed to rename {fileName}, file {targetName} already exists!", ConsoleColor.DarkRed);
+                    LoggingUtils.Info("DarkSoulsResourcePack", $"Failed to rename {fileName}, file {targetName} already exists!");
                     continue;
                 }
 
                 File.Move(filePath, targetPath);
-                ConsoleUtils.WriteLine($"[DarkSouls] Renamed {fileName} -> {targetName}", ConsoleColor.DarkGreen);
+                LoggingUtils.Info("DarkSoulsResourcePack", $"Renamed {fileName} -> {targetName}");
             }
         }
 
@@ -175,7 +175,7 @@ namespace DarkSouls.Utils
                 {
                     IsEnabled = false;
                     SortingOrder = -1;
-                    ConsoleUtils.WriteLine($"[DarkSouls] Failed to read resource pack info: {ex}", ConsoleColor.DarkRed);
+                    LoggingUtils.Info("DarkSoulsResourcePack", $"Failed to read resource pack info: {ex}");
                 }
             }
         }
@@ -192,7 +192,7 @@ namespace DarkSouls.Utils
             }
             catch (Exception ex)
             {
-                ConsoleUtils.WriteLine($"[DarkSouls] Failed to extract the resource pack: {ex}", ConsoleColor.DarkRed);
+                LoggingUtils.Info("DarkSoulsResourcePack", $"Failed to extract the resource pack: {ex}");
                 return;
             }
 
@@ -214,7 +214,7 @@ namespace DarkSouls.Utils
                 stream.CopyTo(fs);
             }
 
-            ConsoleUtils.WriteLine("[DarkSouls] Embedded resource pack was successfully extracted!", ConsoleColor.DarkGreen);
+            LoggingUtils.Info("DarkSoulsResourcePack", "Embedded resource pack was successfully extracted!");
         }
 
         public static string GetDirectoryHash(string directoryPath)
@@ -222,7 +222,7 @@ namespace DarkSouls.Utils
             try
             {
                 using var sha256 = SHA256.Create();
-                var files = Directory.GetFiles(directoryPath, "*", System.IO.SearchOption.AllDirectories).OrderBy(p => p);
+                var files = Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories).OrderBy(p => p);
 
                 using var ms = new MemoryStream();
 
@@ -245,7 +245,7 @@ namespace DarkSouls.Utils
             }
             catch (Exception ex)
             {
-                ConsoleUtils.WriteLine($"[DarkSouls] Failed to compute SHA256 hash for directory at path: {directoryPath} [{ex}]", ConsoleColor.DarkRed);
+                LoggingUtils.Error("DarkSoulsResourcePack", $"Failed to compute SHA256 hash for directory at path: {directoryPath} [{ex}]");
                 return "";
             }
         }
@@ -263,7 +263,7 @@ namespace DarkSouls.Utils
             }
             catch (Exception ex)
             {
-                ConsoleUtils.WriteLine($"[DarkSouls] Failed to compute SHA256 hash for file at path: {filePath} [{ex}]", ConsoleColor.DarkRed);
+                LoggingUtils.Error("DarkSoulsResourcePack", $"Failed to compute SHA256 hash for file at path: {filePath} [{ex}]");
                 return "";
             }
 

@@ -163,7 +163,8 @@ namespace DarkSouls
         #endregion
 
         #region Buffs Variables
-        private Dictionary<int, bool> newDebuffs = new(); // stores the state of the buffs that were first applied to the player
+        private List<int> previousDebuffs = new List<int>();
+        private List<int> currentDebuffs = new List<int>();
         #endregion
 
         #region Bloodstain Variables
@@ -453,35 +454,28 @@ namespace DarkSouls
 
         public override void PostUpdateBuffs()
         {
-            // This code fragment handles the first apply of debuffs
-            // GlobalBuff.ReApply function overload (DSBuffChanges.cs file) is used to handle the reapplication of debuffs
-            Dictionary<int, int> currentDebuffs = new();
-            List<int> playerBuffs = Player.buffType.ToList();
+            currentDebuffs.Clear();
 
-            foreach (int debuffType in DarkSoulsBuffChanges.terrariaDebuff)
+            for (int i = 0; i < Player.buffType.Length; i++)
             {
-                int debuffIndex = playerBuffs.FindIndex(x => x == debuffType);
-                if (debuffIndex == -1)
-                {
-                    newDebuffs[debuffType] = true;
+                int buffType = Player.buffType[i];
+
+                if (buffType <= 0 || !Main.debuff[buffType] || buffType == BuffID.PotionSickness)
                     continue;
-                }
 
-                int debuffTime = Player.buffTime[debuffIndex];
-                if (debuffTime <= 0)
-                {
-                    newDebuffs[debuffType] = true;
+                currentDebuffs.Add(buffType);
+
+                if (Player.buffTime[i] <= 2)
                     continue;
-                }
 
-                bool isNew = newDebuffs.GetValueOrDefault(debuffType, false);
-
-                if (isNew)
+                if (!previousDebuffs.Contains(buffType))
                 {
-                    Player.buffTime[debuffIndex] = (int)(Player.buffTime[debuffIndex] * (1f - StatFormulas.GetDebuffsResistanceByResistance(dsResistance)));
-                    newDebuffs[debuffType] = false;
+                    float resistance = StatFormulas.GetDebuffsResistanceByResistance(dsResistance);
+                    Player.buffTime[i] = (int)(Player.buffTime[i] * (1f - resistance));
                 }
             }
+
+            (previousDebuffs, currentDebuffs) = (currentDebuffs, previousDebuffs);
         }
 
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)

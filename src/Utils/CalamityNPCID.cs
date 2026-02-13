@@ -22,7 +22,7 @@ namespace DarkSouls.Utils
             if (!DarkSouls.CalamityModIsEnabled)
                 return;
 
-            ConsoleUtils.Info("CalamityNPCID", "Initialize");
+            LoggingUtils.Info("CalamityNPCID", "Initialize");
 
             Oarfish = GetCalamityNPCIDByName("OarfishHead");
             MirageJelly = GetCalamityNPCIDByName("MirageJelly");
@@ -42,7 +42,7 @@ namespace DarkSouls.Utils
             ModNPC modNPC;
             if (ModContent.TryFind("CalamityMod", npcName, out modNPC))
                 return modNPC.Type;
-            ConsoleUtils.Error("CalamityNPCID", $"Not found Calamity NPC by name ({npcName})");
+            LoggingUtils.Error("CalamityNPCID", $"Not found Calamity NPC by name ({npcName})");
             return NPCID.None;
         }
 
@@ -51,7 +51,7 @@ namespace DarkSouls.Utils
             ModNPC modNPC;
             if (ModContent.TryFind("CalamityMod", npcName, out modNPC))
                 return modNPC;
-            ConsoleUtils.Error("CalamityNPCID", $"Not found Calamity NPC by name ({npcName})");
+            LoggingUtils.Error("CalamityNPCID", $"Not found Calamity NPC by name ({npcName})");
             return null;
         }
     }
