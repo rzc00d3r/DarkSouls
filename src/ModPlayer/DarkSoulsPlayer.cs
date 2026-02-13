@@ -163,7 +163,8 @@ namespace DarkSouls
         #endregion
 
         #region Buffs Variables
-        private Dictionary<int, bool> newDebuffs = new(); // stores the state of the buffs that were first applied to the player
+        private List<int> previousDebuffs = new List<int>();
+        private List<int> currentDebuffs = new List<int>();
         #endregion
 
         #region Bloodstain Variables
@@ -453,38 +454,28 @@ namespace DarkSouls
 
         public override void PostUpdateBuffs()
         {
+            currentDebuffs.Clear();
+
             for (int i = 0; i < Player.buffType.Length; i++)
             {
                 int buffType = Player.buffType[i];
 
-                if (buffType <= 0)
+                if (buffType <= 0 || !Main.debuff[buffType] || buffType == BuffID.PotionSickness)
                     continue;
 
-                if (!Main.debuff[buffType])
-                    continue;
-
-                if (buffType == BuffID.PotionSickness)
-                    continue;
+                currentDebuffs.Add(buffType);
 
                 if (Player.buffTime[i] <= 2)
                     continue;
 
-                if (Player.buffTime[i] <= 0)
-                {
-                    if (newDebuffs.ContainsKey(buffType))
-                        newDebuffs[buffType] = true;
-                    continue;
-                }
-
-                bool isNew = !newDebuffs.ContainsKey(buffType) || newDebuffs[buffType];
-
-                if (isNew)
+                if (!previousDebuffs.Contains(buffType))
                 {
                     float resistance = StatFormulas.GetDebuffsResistanceByResistance(dsResistance);
                     Player.buffTime[i] = (int)(Player.buffTime[i] * (1f - resistance));
-                    newDebuffs[buffType] = false;
                 }
             }
+
+            (previousDebuffs, currentDebuffs) = (currentDebuffs, previousDebuffs);
         }
 
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
