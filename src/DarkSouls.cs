@@ -13,6 +13,7 @@ using DarkSouls.NPCs;
 using DarkSouls.Utils;
 using DarkSouls.Config;
 using DarkSouls.Systems;
+using DarkSouls.ModSupport;
 using DarkSouls.DataStructures;
 
 namespace DarkSouls
@@ -55,12 +56,7 @@ namespace DarkSouls
         public static bool CalamityModIsEnabled = false;
         #endregion
 
-        public enum NetMessageTypes : byte
-        {
-            GetSouls,
-            SyncVitality
-        }
-
+        #region Post Setup Content
         public override void PostSetupContent()
         {
             #region Resource Pack
@@ -97,7 +93,9 @@ namespace DarkSouls
             #endregion
 
         }
+        #endregion
 
+        #region Load
         public override void Load()
         {
             if (!Main.dedServ)
@@ -146,7 +144,9 @@ namespace DarkSouls
                 };
             }
         }
+        #endregion
 
+        #region Unload
         public override void Unload()
         {
             ToggleDarkSoulsStatsUIKey = null;
@@ -171,6 +171,15 @@ namespace DarkSouls
 
             dsMaleDamageSounds = null;
             dsFemaleDamageSounds = null;
+        }
+        #endregion
+
+        #region Netcode
+
+        public enum NetMessageTypes : byte
+        {
+            GetSouls,
+            SyncVitality
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
@@ -201,5 +210,10 @@ namespace DarkSouls
                     break;
             }
         }
+        #endregion
+
+        #region Mod Support
+        public override object Call(params object[] args) => ModCalls.Call(args);
+        #endregion
     }
 }
