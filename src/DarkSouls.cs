@@ -189,7 +189,7 @@ namespace DarkSouls
             switch (messageType)
             {
                 case NetMessageTypes.GetSouls:
-                    int souls = reader.ReadInt32();
+                    long souls = reader.ReadInt64();
                     Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>().AddSouls(souls);
                     break;
                 case NetMessageTypes.SyncVitality:

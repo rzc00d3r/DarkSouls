@@ -165,6 +165,7 @@ Configs: {
 		Headers: {
 			ResourcePack: Resource Pack
 			Other: Other
+			Interface: Interface
 		}
 
 		DisableOverrideHurtSounds: {
@@ -209,6 +210,24 @@ Configs: {
 		DisableDash: {
 			Label: Disable Dash
 			Tooltip: Disables the dash with invincibility frames
+		}
+
+		SoulsCounterXPercent: {
+			Label: Souls Counter Position X (in percent)
+			Tooltip:
+				'''
+				Adjusts the horizontal position of the souls counter on the screen.
+				0% is far left, 100% is far right.
+				'''
+		}
+
+		SoulsCounterYPercent: {
+			Label: Souls Counter Position Y (in percent)
+			Tooltip:
+				'''
+				Adjusts the vertical position of the souls counter on the screen.
+				0% is the top, 100% is the bottom.
+				'''
 		}
 	}
 }

@@ -34,9 +34,9 @@ namespace DarkSouls.UI
 
         public void Hide()
         {
+            alpha = 1f;
             visible = false;
             fullyVisible = false;
-            alpha = 1f;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -64,7 +64,7 @@ namespace DarkSouls.UI
             }
 
             spriteBatch.Draw(TextureAssets.MagicPixel.Value,
-                new Rectangle(0, 0, Main.screenWidth, Main.screenHeight),
+                new Rectangle(-10, -10, Main.screenWidth + 20, Main.screenHeight + 20),
                 Color.Black * alpha
             );
 
@@ -83,7 +83,6 @@ namespace DarkSouls.UI
 
             spriteBatch.DrawString(font, respawnText, respawnPosition + new Vector2(1, 1), Color.Black * alpha, 0f, Vector2.Zero, 0.3f, SpriteEffects.None, 0f);
             spriteBatch.DrawString(font, respawnText, respawnPosition, Color.Gray * alpha, 0f, Vector2.Zero, 0.3f, SpriteEffects.None, 0f);
-
         }
     }
 }
