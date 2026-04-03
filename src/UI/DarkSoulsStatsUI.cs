@@ -24,7 +24,9 @@ namespace DarkSouls.UI
         public bool openedFromBonfire = false;
         public bool respecStats = false;
         private bool firstUpdate = true;
-        
+
+        private int cachedLevelUpCostMultiplierPercent = -1;
+
         private Stack<long> levelUPCosts = new Stack<long>();
 
         private UIPanel mainPanel;
@@ -352,6 +354,25 @@ namespace DarkSouls.UI
             DarkSoulsPlayer dsPlayer = Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>();
             playerName.SetText(Main.LocalPlayer.name);
 
+            if (cachedLevelUpCostMultiplierPercent == -1)
+                cachedLevelUpCostMultiplierPercent = Config.ServerConfig.Instance.LevelUpCostMultiplierPercent;
+
+            if (cachedLevelUpCostMultiplierPercent != Config.ServerConfig.Instance.LevelUpCostMultiplierPercent)
+            {
+                if (levelUPCosts.Count > 0 && !respecStats)
+                {
+                    ResetValues();
+                    levelUPCosts.Clear();
+                    acceptButton.SetImage(acceptButtonInactiveTexture);
+                    acceptButtonIsActive = false;
+                    updateSoulsValue = true;
+
+                    SoundEngine.PlaySound(DarkSouls.dsInferfaceReturnSound);
+                }
+
+                cachedLevelUpCostMultiplierPercent = Config.ServerConfig.Instance.LevelUpCostMultiplierPercent;
+            }
+
             LocalizedText dashCooldownTime = Language.GetText("Mods.DarkSouls.UI.StatsUI.DashCooldownTime");
 
             if (!openedFromBonfire && !respecStats) // show real stats (Status out of the bonfire)
@@ -481,6 +502,7 @@ namespace DarkSouls.UI
                 debuffsResistanceValue.SetText($"{Math.Round(debuffsResistanceReal * 100, 2)}% > {Math.Round(debuffsResistanceVisual * 100, 2)}%");
                 invincibilityFramesValue.SetText($"{invincibilityFramesReal} > {invincibilityFramesVisual}");
                 dashCooldownValue.SetText($"{dashCooldownRealString} > {dashCooldownVisualString}");
+                
                 if (updateSoulsValue)
                 {
                     soulsValue.SetText(dsPlayer.dsSouls.ToString());
@@ -639,6 +661,8 @@ namespace DarkSouls.UI
             levelUPCosts.Clear();
             respecStats = false;
             openedFromBonfire = false;
+
+            cachedLevelUpCostMultiplierPercent = -1;
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

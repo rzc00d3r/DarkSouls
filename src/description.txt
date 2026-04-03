@@ -57,7 +57,7 @@ Discord channel: https://discord.gg/jwTRnFvCc2
 
 ⚠ Внимание ⚠
 
-Для активации всех изменений, требуется включить ресурс пак и поставить ему найвысший приоритет в настройках tModLoader!
+Для активации всех изменений, требуется включить ресурс пак и поставить ему наивысший приоритет в настройках tModLoader!
 
 Исходный код мода: https://github.com/rzc00d3r/DarkSouls
 Мой discord канал: https://discord.gg/jwTRnFvCc2

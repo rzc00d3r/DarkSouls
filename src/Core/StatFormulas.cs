@@ -99,17 +99,18 @@ namespace DarkSouls.Core
             potential += Math.Max(0, Math.Min(faith - 51, 48)) * (0.15f / 48); // 0.85 - 1.00 (faith: 51 - 99)
             return potential;
         }
+
         public static long GetReqSoulsByLevel(int level)
         {
-            float multiplier = ServerConfig.Instance.LevelUpCostMultiplierPercent / 100f;
-            int reqSouls = 0;
+            double multiplier = ServerConfig.Instance.LevelUpCostMultiplierPercent / 100.0;
+            long reqSouls = 0;
 
             if (level >= 35) // 35+
-                reqSouls = (int)((0.02 * Math.Pow(level, 3) + 3.05 * Math.Pow(level, 2) + 90 * level - 6500) * 1.05d);
+                reqSouls = (long)((0.02 * Math.Pow(level, 3) + 3.05 * Math.Pow(level, 2) + 90 * level - 6500) * 1.05d);
             else if (level > 0 && level < 35) // 1 - 35
-                reqSouls = (int)(500 * Math.Pow(1.025, level - 1)); // 2.5% increase per level
+                reqSouls = (long)(500 * Math.Pow(1.025, level - 1)); // 2.5% increase per level
 
-            reqSouls = (int)(reqSouls * multiplier);
+            reqSouls = (long)(reqSouls * multiplier);
 
             return reqSouls;
         }

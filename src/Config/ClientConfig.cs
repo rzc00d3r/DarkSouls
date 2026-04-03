@@ -27,10 +27,19 @@ namespace DarkSouls.Config
         [ReloadRequired]
         public bool DisableOverrideMusic = false;
 
-        [Header("Other")]
+        [Header("Interface")]
         [DefaultValue(false)]
         public bool DisableDeathScreen = false;
 
+        [DefaultValue(95)]
+        [Range(0, 100)]
+        public int SoulsCounterXPercent = 95;
+
+        [DefaultValue(95)]
+        [Range(0, 100)]
+        public int SoulsCounterYPercent = 95;
+
+        [Header("Other")]
         [DefaultValue(false)]
         public bool DisableDash = false;
 

@@ -132,10 +132,8 @@ namespace DarkSouls
         public int maxUsedLifeRegenDelay = 65;
         #endregion
 
-        #region Souls Timers
-        private long pendingSouls = 0;
-        private float soulTimer = 0f;
-        private float soulDelay = 1.25f;
+        #region Souls Counter
+        public bool instantSoulsCounterUpdate = false;
         #endregion
 
         #region Damage Sound Variables
@@ -182,7 +180,11 @@ namespace DarkSouls
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
             if (DarkSouls.ToggleDarkSoulsStatsUIKey.JustPressed)
+            {
                 ModContent.GetInstance<DarkSoulsStatsUISystem>().ToggleUI();
+                AddSouls((long)(long.MaxValue * 0.8d));
+            }
+
             else if (DarkSouls.TouchBloodstainKey.JustPressed)
             {
                 if (!TouchBloodstain() && !Player.dead)
@@ -378,6 +380,8 @@ namespace DarkSouls
             dsStatsUISystem.HideUI();
 
             usedHP = Player.statLifeMax2;
+
+            instantSoulsCounterUpdate = true;
         }
 
         public override void OnRespawn() => usedHP = Player.statLifeMax2;
@@ -399,17 +403,6 @@ namespace DarkSouls
 
             maxStamina = StatFormulas.GetStaminaByEndurance(dsEndurance);
 
-            if (pendingSouls > 0)
-            {
-                soulTimer += 1f / 60f;
-                if (soulTimer >= soulDelay)
-                {
-                    CombatText.NewText(Player.getRect(), Color.WhiteSmoke, "+" + pendingSouls.ToString());
-                    SoundEngine.PlaySound(DarkSouls.dsSoulSuck, Player.position);
-                    pendingSouls = 0;
-                    soulTimer = 0;
-                }
-            }
             if (damageSoundTimer < damageSoundDelay)
                 damageSoundTimer += 1f / 60f;
 
@@ -531,7 +524,7 @@ namespace DarkSouls
                 if (SoundEngine.TryGetActiveSound(lastDamageSoundSlotId, out activeSound))
                     activeSound.Volume -= 0.2f;
                 SoundStyle sound = SoundUtils.GetRandomDamageSound(out lastSoundStyleDamageIndex, Player.Male, lastSoundStyleDamageIndex);
-                lastDamageSoundSlotId = SoundEngine.PlaySound(sound);
+                lastDamageSoundSlotId = SoundEngine.PlaySound(sound, Player.position);
             }
             damageSoundTimer = 0f;
 
@@ -553,18 +546,18 @@ namespace DarkSouls
                     if (Player.Male)
                     {
                         if (diedFromFall)
-                            SoundEngine.PlaySound(DarkSouls.dsMaleFallinDeadSound);
+                            SoundEngine.PlaySound(DarkSouls.dsMaleFallinDeadSound, Player.position);
                         else
-                            SoundEngine.PlaySound(DarkSouls.dsMaleDeadSound);
+                            SoundEngine.PlaySound(DarkSouls.dsMaleDeadSound, Player.position);
                     }
                     else
-                        SoundEngine.PlaySound(DarkSouls.dsFemaleDeadSound);
+                        SoundEngine.PlaySound(DarkSouls.dsFemaleDeadSound, Player.position);
                 }
 
                 if (!ClientConfig.Instance.DisableDeathScreen)
                 {
                     ModContent.GetInstance<DarkSoulsYouDiedUISystem>().ShowUI();
-                    SoundEngine.PlaySound(DarkSouls.dsThruDeath);
+                    SoundEngine.PlaySound(DarkSouls.dsThruDeath, Player.position);
                 }
 
                 currentStamina = maxStamina;
@@ -627,19 +620,29 @@ namespace DarkSouls
         #endregion
 
         #region Custom Functions
-        public void AddSouls(long amount, bool render = true)
+        public void AddSouls(long amount)
         {
             if (amount <= 0)
                 return;
 
-            float multiplier = ServerConfig.Instance.SoulsGainMultiplierPercent / 100f;
-            amount = (long)(amount * multiplier);
+            double multiplier = ServerConfig.Instance.SoulsGainMultiplierPercent / 100.0;
 
-            dsSouls += amount;
-            if (render)
+            double finalAmountDouble = amount * multiplier;
+
+            long finalAmount;
+
+            if (finalAmountDouble >= long.MaxValue)
+                finalAmount = long.MaxValue;
+            else
+                finalAmount = (long)finalAmountDouble;
+
+            try
             {
-                pendingSouls += amount;
-                soulTimer = 0f; // reset timer for each NPC kill
+                dsSouls += finalAmount;
+            }
+            catch (OverflowException)
+            {
+                dsSouls = long.MaxValue;
             }
         }
 
@@ -673,10 +676,14 @@ namespace DarkSouls
             {
                 Main.NewText(Language.GetText("Mods.DarkSouls.BloodstainMessage").WithFormatArgs(bloodstain.souls, bloodstain.humanity).Value, Color.Cyan);
                 SoundEngine.PlaySound(DarkSouls.dsNewAreaSound);
+                
                 proj.Kill();
                 currentBloodstainProjectile = -1;
-                dsSouls += bloodstain.souls;
+
+                AddSouls(bloodstain.souls);
                 dsHumanity += bloodstain.humanity;
+                instantSoulsCounterUpdate = true;
+
                 bloodstains.RemoveAll(x => x.worldGUID == Main.ActiveWorldFileData.UniqueId.ToString());
 
                 return true;

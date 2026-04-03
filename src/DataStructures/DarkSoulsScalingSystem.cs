@@ -732,13 +732,13 @@ namespace DarkSouls.DataStructures
             };
         }
 
-        public static DamageBonuses GetBonusDamage(Item item)
+        public static DamageBonuses GetBonusDamage(Item item, Player player)
         {
             WeaponParams wp;
             if (!AllWeaponsParams.TryGetValue(item.type, out wp))
                 return new();
 
-            DarkSoulsPlayer dsPlayer = Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>();
+            DarkSoulsPlayer dsPlayer = player.GetModPlayer<DarkSoulsPlayer>();
 
             int bonusDamageByStrength = (int)(GetScalingGradeModifier(wp.StrengthScalingGrade) * StatFormulas.GetPotentialByStrength(dsPlayer.dsStrength) * wp.Saturation);
             int bonusDamageByDexterity = (int)(GetScalingGradeModifier(wp.DexterityScalingGrade) * StatFormulas.GetPotentialByDexterity(dsPlayer.dsDexterity) * wp.Saturation);

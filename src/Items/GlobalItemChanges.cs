@@ -1,12 +1,13 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
+
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-using System.Collections.Generic;
-
-using DarkSouls.DataStructures;
-using static DarkSouls.Constants.Constants;
 using DarkSouls.Config;
+using DarkSouls.DataStructures;
+
+using static DarkSouls.Constants.Constants;
 
 namespace DarkSouls.Items
 {
@@ -20,8 +21,9 @@ namespace DarkSouls.Items
             if (ScalingSystemIsDisabled(item))
                 return true;
 
-            DarkSoulsPlayer dsPlayer = Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>();
+            DarkSoulsPlayer dsPlayer = player.GetModPlayer<DarkSoulsPlayer>();
             DarkSoulsScalingSystem.WeaponParams weaponParams = new();
+
             if (!DarkSoulsScalingSystem.AllWeaponsParams.TryGetValue(item.type, out weaponParams))
                 return true;
 
@@ -40,7 +42,7 @@ namespace DarkSouls.Items
             if (!DarkSoulsScalingSystem.AllWeaponsParams.TryGetValue(item.type, out weaponParams))
                 return;
 
-            DarkSoulsScalingSystem.DamageBonuses damageBonuses = DarkSoulsScalingSystem.GetBonusDamage(item);
+            DarkSoulsScalingSystem.DamageBonuses damageBonuses = DarkSoulsScalingSystem.GetBonusDamage(item, player);
             if (damageBonuses.total == 0)
                 return;
 
@@ -59,7 +61,7 @@ namespace DarkSouls.Items
             TooltipLine customTooltipLine = new(Mod, "WeaponParams", weaponParams.ToTooltipText());
             tooltips.Add(customTooltipLine);
 
-            DarkSoulsScalingSystem.DamageBonuses damageBonuses = DarkSoulsScalingSystem.GetBonusDamage(item);
+            DarkSoulsScalingSystem.DamageBonuses damageBonuses = DarkSoulsScalingSystem.GetBonusDamage(item, Main.LocalPlayer);
             if (damageBonuses.total == 0)
                 return;
 

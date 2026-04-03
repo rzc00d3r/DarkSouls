@@ -1,49 +1,39 @@
 ﻿using System;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
+using Terraria.GameContent;
 
 using ReLogic.Content;
 using ReLogic.Graphics;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace DarkSouls.UI
 {
     public class CustomResourceBars : ModResourceDisplaySet
     {
         private Asset<Texture2D> emptyBar;
-        private Asset<Texture2D> staminaBarSegment;
-        private Asset<Texture2D> hpBarSegment;
-        private Asset<Texture2D> manaBarSegment;
-
-        private Asset<Texture2D> usedBarSegment;
-        private Asset<Texture2D> usedHPBarSegment;
 
         private int barWidth;
         private int barHeight;
+        private int barBorderOffset;
+
         private int segments;
 
         public override void Load()
         {
             if (!Main.dedServ)
-            {
                 emptyBar = ModContent.Request<Texture2D>("DarkSouls/UI/Textures/Bars/EmptyBar");
-                staminaBarSegment = ModContent.Request<Texture2D>("DarkSouls/UI/Textures/Bars/StaminaBarSegment");
-                hpBarSegment = ModContent.Request<Texture2D>("DarkSouls/UI/Textures/Bars/HPBarSegment");
-                manaBarSegment = ModContent.Request<Texture2D>("DarkSouls/UI/Textures/Bars/ManaBarSegment");
-                usedBarSegment = ModContent.Request<Texture2D>("DarkSouls/UI/Textures/Bars/UsedBarSegment");
-                usedHPBarSegment = ModContent.Request<Texture2D>("DarkSouls/UI/Textures/Bars/UsedHPBarSegment");
-            }
         }
 
         public override void SetStaticDefaults()
         {
-            barWidth = emptyBar.Width();
-            barHeight = emptyBar.Height();
-            segments = barWidth - 2 * 3;
+            barWidth = emptyBar.Width(); // 226
+            barHeight = emptyBar.Height(); // 14
+            barBorderOffset = 3;
+            segments = barWidth - (barBorderOffset * 2); // 220
         }
 
         public override void DrawLife(SpriteBatch spriteBatch)
@@ -63,73 +53,145 @@ namespace DarkSouls.UI
 
         private void DrawHealthBar(SpriteBatch spriteBatch)
         {
-            DarkSoulsPlayer dsPlayer = Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>();
             Player player = Main.LocalPlayer;
-            Vector2 position = new Vector2(Main.miniMapX - 4, 20);
+            DarkSoulsPlayer dsPlayer = player.GetModPlayer<DarkSoulsPlayer>();
+
+            Vector2 position = new Vector2(Main.miniMapX - 4f, 20f);
+            spriteBatch.Draw(emptyBar.Value, position, Color.White);
 
             if (player.statLifeMax2 > 0)
             {
-                int draw = (int)(((float)dsPlayer.usedHP / player.statLifeMax2) * segments);
-                if (dsPlayer.usedHP >= player.statLifeMax2)
-                    draw++;
-                for (int i = 0; i < draw; i++)
-                    spriteBatch.Draw(usedHPBarSegment.Value, new Vector2(position.X + 3 + i, position.Y + 2), Color.White);
+                float usedHpWidth = ((float)dsPlayer.usedHP / player.statLifeMax2) * segments;
+                float hpWidth = ((float)player.statLife / player.statLifeMax2) * segments;
 
-                draw = (int)(((float)player.statLife / player.statLifeMax2) * segments);
-                if (player.statLife >= player.statLifeMax2)
-                    draw++;
-                for (int i = 0; i < draw; i++)
-                    spriteBatch.Draw(hpBarSegment.Value, new Vector2(position.X + 3 + i, position.Y + 2), Color.White);
+                float innerX = position.X + barBorderOffset;
+                float innerY = position.Y + barBorderOffset;
+
+                Color usedTop = new Color(170, 130, 20); 
+                Color usedBottom = new Color(90, 70, 10); 
+
+                if (usedHpWidth > 0f)
+                    DrawGradFill(spriteBatch, innerX, innerY, usedHpWidth, usedTop, usedBottom);
+                
+                Color hpTop = new Color(150, 30, 30); 
+                Color hpBottom = new Color(80, 10, 10); 
+
+                if (hpWidth > 0f)
+                    DrawGradFill(spriteBatch, innerX, innerY, hpWidth, hpTop, hpBottom);
+
             }
 
-            spriteBatch.Draw(emptyBar.Value, position, new Rectangle(0, 0, barWidth, barHeight), Color.White);
-            position += new Vector2(barWidth + 5, -1);
-            spriteBatch.DrawString(FontAssets.MouseText.Value, $"{player.statLife}/{player.statLifeMax2}", position, Color.WhiteSmoke, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+            DrawBarDividers(spriteBatch, position, 4);
+
+            Vector2 textPos = position + new Vector2(barWidth + 5f, -1f);
+            spriteBatch.DrawString(FontAssets.MouseText.Value, $"{player.statLife}/{player.statLifeMax2}", textPos, Color.WhiteSmoke, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+        }
+
+        private void DrawManaBar(SpriteBatch spriteBatch)
+        {
+            Player player = Main.LocalPlayer;
+            DarkSoulsPlayer dsPlayer = player.GetModPlayer<DarkSoulsPlayer>();
+
+            Vector2 position = new Vector2(Main.miniMapX - 4f, 20f + barHeight + 3f);
+            spriteBatch.Draw(emptyBar.Value, position, Color.White);
+
+            if (player.statManaMax2 > 0)
+            {
+                float usedManaWidth = ((float)dsPlayer.usedMana / player.statManaMax2) * segments;
+                float manaWidth = ((float)player.statMana / player.statManaMax2) * segments;
+
+                float innerX = position.X + barBorderOffset;
+                float innerY = position.Y + barBorderOffset;
+
+                Color usedTop = new Color(170, 130, 20); 
+                Color usedBottom = new Color(90, 70, 10); 
+
+                if (usedManaWidth > 0f)
+                    DrawGradFill(spriteBatch, innerX, innerY, usedManaWidth, usedTop, usedBottom);
+
+                Color manaTop = new Color(50, 90, 150); 
+                Color manaBottom = new Color(20, 35, 80); 
+
+                if (manaWidth > 0f)
+                    DrawGradFill(spriteBatch, innerX, innerY, manaWidth, manaTop, manaBottom);
+            }
+
+            DrawBarDividers(spriteBatch, position, 4);
+
+            Vector2 textPos = position + new Vector2(barWidth + 5f, -1f);
+            spriteBatch.DrawString(FontAssets.MouseText.Value, $"{player.statMana}/{player.statManaMax2}", textPos, Color.WhiteSmoke, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
         }
 
         private void DrawStaminaBar(SpriteBatch spriteBatch)
         {
             DarkSoulsPlayer dsPlayer = Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>();
-            Vector2 position = new Vector2(Main.miniMapX - 4, 20 + 2 * (barHeight + 3));
 
-            if (dsPlayer.currentStamina > 0)
+            Vector2 position = new Vector2(Main.miniMapX - 4f, 20f + 2f * (barHeight + 3f));
+            spriteBatch.Draw(emptyBar.Value, position, Color.White);
+
+            if (dsPlayer.maxStamina > 0)
             {
-                int draw = (int)((dsPlayer.usedStamina / dsPlayer.maxStamina) * segments);
-                if (dsPlayer.usedStamina >= dsPlayer.maxStamina)
-                    draw++;
-                for (int i = 0; i < draw; i++)
-                    spriteBatch.Draw(usedBarSegment.Value, new Vector2(position.X + 3 + i, position.Y + 3), Color.White);
+                float usedStamWidth = (dsPlayer.usedStamina / dsPlayer.maxStamina) * segments;
+                float stamWidth = (dsPlayer.currentStamina / dsPlayer.maxStamina) * segments;
 
-                draw = (int)((dsPlayer.currentStamina / dsPlayer.maxStamina) * segments);
-                if (dsPlayer.currentStamina >= dsPlayer.maxStamina)
-                    draw++;
-                for (int i = 0; i < draw; i++)
-                    spriteBatch.Draw(staminaBarSegment.Value, new Vector2(position.X + 3 + i, position.Y + 3), Color.White);
+                float innerX = position.X + barBorderOffset;
+                float innerY = position.Y + barBorderOffset;
+
+                Color usedTop = new Color(170, 130, 20); 
+                Color usedBottom = new Color(90, 70, 10); 
+
+                if (usedStamWidth > 0f)
+                    DrawGradFill(spriteBatch, innerX, innerY, usedStamWidth, usedTop, usedBottom);
+
+                Color stamTop = new Color(60, 120, 60); 
+                Color stamBottom = new Color(25, 60, 25); 
+
+                if (stamWidth > 0f)
+                    DrawGradFill(spriteBatch, innerX, innerY, stamWidth, stamTop, stamBottom);
             }
 
-            spriteBatch.Draw(emptyBar.Value, position, new Rectangle(0, 0, barWidth, barHeight), Color.White);
-            position += new Vector2(barWidth + 5, -1);
-            spriteBatch.DrawString(FontAssets.MouseText.Value, $"{(int)Math.Floor(dsPlayer.currentStamina)}/{(int)Math.Floor(dsPlayer.maxStamina)}", position, Color.WhiteSmoke, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+            DrawBarDividers(spriteBatch, position, 4);
+
+            Vector2 textPos = position + new Vector2(barWidth + 5f, -1f);
+            spriteBatch.DrawString(FontAssets.MouseText.Value, $"{(int)dsPlayer.currentStamina}/{(int)dsPlayer.maxStamina}", textPos, Color.WhiteSmoke, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
         }
 
-        private void DrawManaBar(SpriteBatch spriteBatch)
+        private void DrawGradFill(SpriteBatch spriteBatch, float x, float y, float width, Color topColor, Color bottomColor)
         {
-            DarkSoulsPlayer dsPlayer = Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>();
-            Player player = Main.LocalPlayer;
-            Vector2 position = new Vector2(Main.miniMapX - 4, 20 + barHeight + 3);
+            Texture2D magicPixel = TextureAssets.MagicPixel.Value;
+            
+            int steps = 4;
+            int heightPerStep = 8 / steps;
 
-            if (player.statMana > 0)
+            for (int i = 0; i < steps; i++)
             {
-                for (int i = 0; i <= ((float)dsPlayer.usedMana / player.statManaMax2) * segments; i++)
-                    spriteBatch.Draw(usedBarSegment.Value, new Vector2(position.X + 3 + i, position.Y + 3), Color.White);
+                float amount = (float)i / (steps - 1); 
+                
+                Color stepColor = Color.Lerp(topColor, bottomColor, amount);
 
-                for (int i = 0; i <= ((float)player.statMana / player.statManaMax2) * segments; i++)
-                    spriteBatch.Draw(manaBarSegment.Value, new Vector2(position.X + 3 + i, position.Y + 3), Color.White);
+                int currentY = (int)y + (i * heightPerStep);
+
+                spriteBatch.Draw(magicPixel, new Rectangle((int)x, currentY, (int)width, heightPerStep), stepColor);
             }
+        }
 
-            spriteBatch.Draw(emptyBar.Value, position, new Rectangle(0, 0, barWidth, barHeight), Color.White);
-            position += new Vector2(barWidth + 5, -1);
-            spriteBatch.DrawString(FontAssets.MouseText.Value, $"{player.statMana}/{player.statManaMax2}", position, Color.WhiteSmoke, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+        private void DrawBarDividers(SpriteBatch spriteBatch, Vector2 position, int sectionCount)
+        {
+            if (sectionCount <= 1)
+                return;
+
+            float sectionWidth = (float)segments / sectionCount;
+
+            int innerX = (int)position.X + barBorderOffset;
+            int innerY = (int)position.Y + barBorderOffset;
+
+            for (int i = 1; i < sectionCount; i++)
+            {
+                int divX = innerX + (int)Math.Round(sectionWidth * i);
+
+                Rectangle divRect = new Rectangle(divX, innerY, 2, barHeight - (barBorderOffset * 2));
+                spriteBatch.Draw(TextureAssets.MagicPixel.Value, divRect, new Color(0, 0, 0, 180));
+            }
         }
     }
 }

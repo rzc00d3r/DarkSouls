@@ -163,40 +163,41 @@ namespace DarkSouls.NPCs
             int npcID = npc.type;
             if (!npc.boss && npcID != NPCID.LunarTowerNebula && npcID != NPCID.LunarTowerSolar && npcID != NPCID.LunarTowerStardust && npcID != NPCID.LunarTowerVortex)
             {
-                // NPC hasn't been damaged by any Player + Souls farming with Statues and friendly NPCs and Boss parts disabled :)
                 if (npc.SpawnedFromStatue || npc.friendly || npc.townNPC || npc.lifeMax <= 5 || (npc.aiStyle == 0 && npc.damage == 0))
                     return;
             }
 
             bool boss;
             DarkSoulsPlayer dsPlayer = Main.player[playerIndex].GetModPlayer<DarkSoulsPlayer>();
-            int souls = GetSoulsByNPC(npc, out boss);
+
+            long souls = GetSoulsByNPC(npc, out boss);
 
             if (souls <= 0)
                 return;
 
-            float soulsMultiplier = 1f;
+            double soulsMultiplier = 1.0;
 
             if (!boss && !Config.ServerConfig.Instance.DisableCrowdControlMultiplier)
                 soulsMultiplier = GetCrowdControlMultiplier();
 
-            souls = (int)(souls * soulsMultiplier);
+            souls = (long)(souls * soulsMultiplier);
 
             if (Main.dedServ)
             {
                 ModPacket packet = Mod.GetPacket();
                 packet.Write((byte)DarkSouls.NetMessageTypes.GetSouls);
                 packet.Write(souls);
-                if (boss) // server sends souls to all clients (if NPC is downed boss)
+
+                if (boss)
                     packet.Send();
-                else // 
-                    packet.Send(playerIndex); // if the client (specific player) kills someone other than boss
+                else
+                    packet.Send(playerIndex);
             }
-            else // single player
+            else
                 dsPlayer.AddSouls(souls);
         }
 
-        private float GetCrowdControlMultiplier()
+        private double GetCrowdControlMultiplier()
         {
             int activeHostileNPCs = 0;
 
@@ -207,16 +208,12 @@ namespace DarkSouls.NPCs
                     activeHostileNPCs++;
             }
 
-            // 15-20 - ванилка
-            // 40 - водяной свеча, боевое зелье
-            float standardCap = 40f;
+            double standardCap = 40.0;
 
             if (activeHostileNPCs <= standardCap)
-                return 1.0f;
+                return 1.0;
 
-            // Боевое зелье (40 мобов) -> множитель 1. (заработок x2)
-            // Зелье Зергов (90+ мобов) -> множитель 0.44 (заработок +- как и в первом случае)
-            return standardCap / (float)activeHostileNPCs;
+            return standardCap / activeHostileNPCs;
         }
 
         public static bool AddNPCIDToBlacklist(int npcID)
@@ -393,11 +390,11 @@ namespace DarkSouls.NPCs
             }
         }
 
-        public int GetSoulsByNPC(NPC npc, out bool boss)
+        public long GetSoulsByNPC(NPC npc, out bool boss)
         {
             boss = false;
             int npcID = npc.type;
-            int souls = 0;
+            long souls = 0;
 
             // Bosses
             if (npc.ModNPC == null) // Vanilla Terraria
@@ -408,7 +405,7 @@ namespace DarkSouls.NPCs
                     NPC kingSlime = new(); kingSlime.SetDefaults(npcID);
                     souls = kingSlime.lifeMax; // 2000
                     if (NPC.downedSlimeKing) // 300
-                        souls = (int)(kingSlime.lifeMax * (2d / 30d));
+                        souls = (long)(kingSlime.lifeMax * (2d / 30d));
                     boss = true;
                     return souls;
                 }
@@ -419,9 +416,9 @@ namespace DarkSouls.NPCs
                     if (NPC.downedBoss1) // 400
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(eyeOfCthulhu.lifeMax * (2d / 15d));
+                            souls = (long)(eyeOfCthulhu.lifeMax * (2d / 15d));
                         else
-                            souls = (int)(eyeOfCthulhu.lifeMax * (1d / 7d));
+                            souls = (long)(eyeOfCthulhu.lifeMax * (1d / 7d));
                     }
                     boss = true;
                     return souls;
@@ -433,16 +430,16 @@ namespace DarkSouls.NPCs
                     if (NPC.downedBoss2) // 560
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(eaterOfWorlds.lifeMax * (16d / 335d));
+                            souls = (long)(eaterOfWorlds.lifeMax * (16d / 335d));
                         else
-                            souls = (int)(eaterOfWorlds.lifeMax * (56d / 1005d));
+                            souls = (long)(eaterOfWorlds.lifeMax * (56d / 1005d));
                     }
                     else // 4700
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(eaterOfWorlds.lifeMax * (188d / 469d));
+                            souls = (long)(eaterOfWorlds.lifeMax * (188d / 469d));
                         else
-                            souls = (int)(eaterOfWorlds.lifeMax * (94d / 201d));
+                            souls = (long)(eaterOfWorlds.lifeMax * (94d / 201d));
                     }
                     boss = true;
                     return souls;
@@ -452,9 +449,9 @@ namespace DarkSouls.NPCs
                     NPC queenBee = new(); queenBee.SetDefaults(npcID);
                     souls = queenBee.lifeMax;
                     if (NPC.downedQueenBee) // 610
-                        souls = (int)(souls * (61d / 340d));
+                        souls = (long)(souls * (61d / 340d));
                     else // 5400
-                        souls = (int)(souls * (27d / 17d));
+                        souls = (long)(souls * (27d / 17d));
                     boss = true;
                     return souls;
                 }
@@ -465,16 +462,16 @@ namespace DarkSouls.NPCs
                     if (NPC.downedDeerclops) // 700
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (7d / 100d));
+                            souls = (long)(souls * (7d / 100d));
                         else
-                            souls = (int)(souls * (1d / 10d));
+                            souls = (long)(souls * (1d / 10d));
                     }
                     else // 6200
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (31d / 50d));
+                            souls = (long)(souls * (31d / 50d));
                         else
-                            souls = (int)(souls * (31d / 35d));
+                            souls = (long)(souls * (31d / 35d));
                     }
 
                     boss = true;
@@ -486,9 +483,9 @@ namespace DarkSouls.NPCs
                     NPC skeletronHand = new(); skeletron.SetDefaults(NPCID.SkeletronHand);
                     souls = skeletron.lifeMax + 2 * skeletronHand.lifeMax;
                     if (NPC.downedBoss3) // 750
-                        souls = (int)(souls * (15d / 88d));
+                        souls = (long)(souls * (15d / 88d));
                     else // 6600
-                        souls = (int)(souls * 1.5f);
+                        souls = (long)(souls * 1.5f);
                     boss = true;
                     return souls;
                 }
@@ -499,14 +496,14 @@ namespace DarkSouls.NPCs
                     if (Main.hardMode) // 840
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (21d / 320d));
+                            souls = (long)(souls * (21d / 320d));
                         else
-                            souls = (int)(souls * (21d / 200d));
+                            souls = (long)(souls * (21d / 200d));
                     }
                     else // 8000
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (5d / 8d));
+                            souls = (long)(souls * (5d / 8d));
                     }
                     boss = true;
                     return souls;
@@ -521,16 +518,16 @@ namespace DarkSouls.NPCs
                     if (NPC.downedQueenSlime) // 900
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (1d / 30d));
+                            souls = (long)(souls * (1d / 30d));
                         else
-                            souls = (int)(souls * (1d / 20d));
+                            souls = (long)(souls * (1d / 20d));
                     }
                     else // 8800
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (44d / 135d));
+                            souls = (long)(souls * (44d / 135d));
                         else
-                            souls = (int)(souls * (22d / 45d));
+                            souls = (long)(souls * (22d / 45d));
                     }
                     boss = true;
                     return souls;
@@ -547,16 +544,16 @@ namespace DarkSouls.NPCs
                     if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) // 3000
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (5d/352d));
+                            souls = (long)(souls * (5d/352d));
                         else
-                            souls = (int)(souls * (5d/342d));
+                            souls = (long)(souls * (5d/342d));
                     }
                     else // 42000
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (35d/176d));
+                            souls = (long)(souls * (35d/176d));
                         else
-                            souls = (int)(souls * (35d/171d));
+                            souls = (long)(souls * (35d/171d));
                     }
                     boss = true;
                     return souls;
@@ -572,16 +569,16 @@ namespace DarkSouls.NPCs
                         if (NPC.downedMechBoss2) // 1100
                         {
                             if (DarkSouls.CalamityModIsEnabled)
-                                souls = (int)(souls * (11d / 480d));
+                                souls = (long)(souls * (11d / 480d));
                             else
-                                souls = (int)(souls * (11d / 430d));
+                                souls = (long)(souls * (11d / 430d));
                         }
                         else // 11200
                         {
                             if (DarkSouls.CalamityModIsEnabled)
-                                souls = (int)(souls * (7d / 30d));
+                                souls = (long)(souls * (7d / 30d));
                             else
-                                souls = (int)(souls * (56d / 215d));
+                                souls = (long)(souls * (56d / 215d));
                         }
                         boss = true;
                     }
@@ -592,9 +589,9 @@ namespace DarkSouls.NPCs
                     NPC destroyer = new(); destroyer.SetDefaults(npcID);
                     souls = destroyer.lifeMax;
                     if (NPC.downedMechBoss1) // 1150
-                        souls = (int)(souls * (23d / 1600d));
+                        souls = (long)(souls * (23d / 1600d));
                     else // 13500
-                        souls = (int)(souls * (27d / 160d));
+                        souls = (long)(souls * (27d / 160d));
                     boss = true;
                     return souls;
                 }
@@ -603,9 +600,9 @@ namespace DarkSouls.NPCs
                     NPC skeletronPrime = new(); skeletronPrime.SetDefaults(npcID);
                     souls = skeletronPrime.lifeMax;
                     if (NPC.downedMechBoss3) // 1350
-                        souls = (int)(souls * (27d / 560d));
+                        souls = (long)(souls * (27d / 560d));
                     else // 17000
-                        souls = (int)(souls * (17d / 28d));
+                        souls = (long)(souls * (17d / 28d));
                     boss = true;
                     return souls;
                 }
@@ -617,16 +614,16 @@ namespace DarkSouls.NPCs
                     if (NPC.downedPlantBoss) // 1750
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (7d / 300d));
+                            souls = (long)(souls * (7d / 300d));
                         else
-                            souls = (int)(souls * (7d / 120d));
+                            souls = (long)(souls * (7d / 120d));
                     }
                     else // 22500
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (3d / 10d));
+                            souls = (long)(souls * (3d / 10d));
                         else
-                            souls = (int)(souls * (3d / 4d));
+                            souls = (long)(souls * (3d / 4d));
                     }
                     boss = true;
                     return souls;
@@ -640,16 +637,16 @@ namespace DarkSouls.NPCs
                     if (NPC.downedGolemBoss) // 2500
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (5d / 128d));
+                            souls = (long)(souls * (5d / 128d));
                         else
-                            souls = (int)(souls * (1d / 24d));
+                            souls = (long)(souls * (1d / 24d));
                     }
                     else // 31000
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (31d / 64d));
+                            souls = (long)(souls * (31d / 64d));
                         else
-                            souls = (int)(souls * (31d / 60d));
+                            souls = (long)(souls * (31d / 60d));
                     }
                     boss = true;
                     return souls;
@@ -661,16 +658,16 @@ namespace DarkSouls.NPCs
                     if (NPC.downedFishron) // 2800
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (7d / 250d));
+                            souls = (long)(souls * (7d / 250d));
                         else
-                            souls = (int)(souls * (7d / 150d));
+                            souls = (long)(souls * (7d / 150d));
                     }
                     else // 34500
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (69d / 200d));
+                            souls = (long)(souls * (69d / 200d));
                         else
-                            souls = (int)(souls * (23d / 40d));
+                            souls = (long)(souls * (23d / 40d));
                     }
                     boss = true;
                     return souls;
@@ -682,16 +679,16 @@ namespace DarkSouls.NPCs
                     if (NPC.downedEmpressOfLight) // 3250
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (13d / 400d));
+                            souls = (long)(souls * (13d / 400d));
                         else
-                            souls = (int)(souls * (13d / 280d));
+                            souls = (long)(souls * (13d / 280d));
                     }
                     else // 38500
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (77d / 200d));
+                            souls = (long)(souls * (77d / 200d));
                         else
-                            souls = (int)(souls * (11d / 20d));
+                            souls = (long)(souls * (11d / 20d));
                     }
                     boss = true;
                     return souls;
@@ -703,16 +700,16 @@ namespace DarkSouls.NPCs
                     if (NPC.downedAncientCultist) // 3800
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (19d / 400d));
+                            souls = (long)(souls * (19d / 400d));
                         else
-                            souls = (int)(souls * (19d / 160d));
+                            souls = (long)(souls * (19d / 160d));
                     }
                     else // 41500
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (83d / 160d));
+                            souls = (long)(souls * (83d / 160d));
                         else
-                            souls = (int)(souls * (83d / 64d));
+                            souls = (long)(souls * (83d / 64d));
                     }
                     boss = true;
                     return souls;
@@ -725,7 +722,7 @@ namespace DarkSouls.NPCs
                     if ((NPC.downedTowerSolar && npcID == NPCID.LunarTowerSolar) || (NPC.downedTowerNebula && npcID == NPCID.LunarTowerNebula) ||
                         (NPC.downedTowerVortex && npcID == NPCID.LunarTowerVortex) || (NPC.downedTowerStardust && npcID == NPCID.LunarTowerStardust)
                     ) // 2000
-                        souls = (int)(souls * (1d / 10d));
+                        souls = (long)(souls * (1d / 10d));
                     boss = true;
                     return souls;
                 }
@@ -738,15 +735,15 @@ namespace DarkSouls.NPCs
                     if (NPC.downedMoonlord) // 4500
                     {
                         if (DarkSouls.CalamityModIsEnabled)
-                            souls = (int)(souls * (9d / 374d));
+                            souls = (long)(souls * (9d / 374d));
                         else
-                            souls = (int)(souls * (9d / 290d));
+                            souls = (long)(souls * (9d / 290d));
                     }
                     else // 50000
                         if (DarkSouls.CalamityModIsEnabled)
-                        souls = (int)(souls * (50d / 187d));
+                        souls = (long)(souls * (50d / 187d));
                     else
-                        souls = (int)(souls * (10d / 29d));
+                        souls = (long)(souls * (10d / 29d));
                     boss = true;
                     return souls;
                 }
@@ -761,9 +758,9 @@ namespace DarkSouls.NPCs
                     NPC desertScourge = new(); desertScourge.SetDefaults(npcID);
                     souls = desertScourge.lifeMax;
                     if (CalamityDownedBossSystem.DesertScourge.Downed) // 350
-                        souls = (int)(souls * (1d / 12d));
+                        souls = (long)(souls * (1d / 12d));
                     else // 2500
-                        souls = (int)(souls * (25d / 42d));
+                        souls = (long)(souls * (25d / 42d));
                     return souls;
                 }
                 if (npcID == CalamityDownedBossSystem.Crabulon.ID)
@@ -772,7 +769,7 @@ namespace DarkSouls.NPCs
                     NPC crabulon = new(); crabulon.SetDefaults(npcID);
                     souls = crabulon.lifeMax; // 3700
                     if (CalamityDownedBossSystem.Crabulon.Downed) // 500
-                        souls = (int)(souls * (5d / 37d));
+                        souls = (long)(souls * (5d / 37d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.ThePerforators.ID || npcID == CalamityDownedBossSystem.TheHiveMind.ID)
@@ -781,9 +778,9 @@ namespace DarkSouls.NPCs
                     NPC theHiveMind = new(); theHiveMind.SetDefaults(CalamityDownedBossSystem.TheHiveMind.ID);
                     souls = theHiveMind.lifeMax;
                     if (CalamityDownedBossSystem.TheHiveMind.Downed) // 600
-                        souls = (int)(souls * (6d / 77d));
+                        souls = (long)(souls * (6d / 77d));
                     else // 5100
-                        souls = (int)(souls * (51d / 77d));
+                        souls = (long)(souls * (51d / 77d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.TheSlimeGod.ID)
@@ -794,9 +791,9 @@ namespace DarkSouls.NPCs
                     NPC crimulanPaladin = new(); crimulanPaladin.SetDefaults(CalamityNPCID.GetCalamityNPCIDByName("CrimulanPaladin"));
                     int theSlimeGodTotalHP = slimeGodCore.lifeMax + ebonianPaladin.lifeMax + crimulanPaladin.lifeMax;
                     if (CalamityDownedBossSystem.TheSlimeGod.Downed) // 790
-                        souls = (int)(theSlimeGodTotalHP * (79d / 1592d));
+                        souls = (long)(theSlimeGodTotalHP * (79d / 1592d));
                     else // 7160
-                        souls = (int)(theSlimeGodTotalHP * (179d / 398d));
+                        souls = (long)(theSlimeGodTotalHP * (179d / 398d));
                     return souls;
                 }
                 #endregion
@@ -807,9 +804,9 @@ namespace DarkSouls.NPCs
                     NPC cryogen = new(); cryogen.SetDefaults(npcID);
                     souls = cryogen.lifeMax;
                     if (CalamityDownedBossSystem.Cryogen.Downed) // 1000
-                        souls = (int)(souls * (1d / 40d));
+                        souls = (long)(souls * (1d / 40d));
                     else // 10000
-                        souls = (int)(souls * (1d / 4d));
+                        souls = (long)(souls * (1d / 4d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.AquaticScourge.ID)
@@ -818,9 +815,9 @@ namespace DarkSouls.NPCs
                     NPC aquaticScourge = new(); aquaticScourge.SetDefaults(npcID);
                     souls = aquaticScourge.lifeMax;
                     if (CalamityDownedBossSystem.AquaticScourge.Downed) // 1150
-                        souls = (int)(souls * (23d / 1600d));
+                        souls = (long)(souls * (23d / 1600d));
                     else // 12500
-                        souls = (int)(souls * (5d / 32d));
+                        souls = (long)(souls * (5d / 32d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.BrimstoneElemental.ID)
@@ -829,9 +826,9 @@ namespace DarkSouls.NPCs
                     NPC brimstoneElemental = new(); brimstoneElemental.SetDefaults(npcID);
                     souls = brimstoneElemental.lifeMax;
                     if (CalamityDownedBossSystem.BrimstoneElemental.Downed) // 1250
-                        souls = (int)(souls * (5d / 164d));
+                        souls = (long)(souls * (5d / 164d));
                     else // 15000
-                        souls = (int)(souls * (15d / 41d));
+                        souls = (long)(souls * (15d / 41d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.CalamitasClone.ID)
@@ -841,9 +838,9 @@ namespace DarkSouls.NPCs
                     NPC catastrophe = new(); catastrophe.SetDefaults(CalamityNPCID.GetCalamityNPCIDByName("Catastrophe"));
                     souls = cataclysm.lifeMax + catastrophe.lifeMax;
                     if (CalamityDownedBossSystem.CalamitasClone.Downed) // 1500
-                        souls = (int)(souls * (15d / 202d));
+                        souls = (long)(souls * (15d / 202d));
                     else // 19000
-                        souls = (int)(souls * (95d / 101d));
+                        souls = (long)(souls * (95d / 101d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.LeviathanAndAnahita.ID)
@@ -853,9 +850,9 @@ namespace DarkSouls.NPCs
                     NPC anahita = new(); anahita.SetDefaults(CalamityNPCID.GetCalamityNPCIDByName("Anahita"));
                     souls = leviathan.lifeMax + anahita.lifeMax;
                     if (CalamityDownedBossSystem.LeviathanAndAnahita.Downed) // 2000
-                        souls = (int)(souls * (2d / 95d));
+                        souls = (long)(souls * (2d / 95d));
                     else // 25750
-                        souls = (int)(souls * (103d / 380d));
+                        souls = (long)(souls * (103d / 380d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.AstrumAureus.ID)
@@ -864,9 +861,9 @@ namespace DarkSouls.NPCs
                     NPC astrumAureus = new(); astrumAureus.SetDefaults(npcID);
                     souls = astrumAureus.lifeMax;
                     if (CalamityDownedBossSystem.AstrumAureus.Downed) // 2250
-                        souls = (int)(souls * (9d / 400d));
+                        souls = (long)(souls * (9d / 400d));
                     else // 28000
-                        souls = (int)(souls * (7d / 25d));
+                        souls = (long)(souls * (7d / 25d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.ThePlaguebringerGoliath.ID)
@@ -875,9 +872,9 @@ namespace DarkSouls.NPCs
                     NPC thePlaguebringerGoliath = new(); thePlaguebringerGoliath.SetDefaults(npcID);
                     souls = thePlaguebringerGoliath.lifeMax;
                     if (CalamityDownedBossSystem.ThePlaguebringerGoliath.Downed) // 3000
-                        souls = (int)(souls * (6d / 175d));
+                        souls = (long)(souls * (6d / 175d));
                     else // 36000
-                        souls = (int)(souls * (72d / 175d));
+                        souls = (long)(souls * (72d / 175d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.Ravager.ID)
@@ -886,9 +883,9 @@ namespace DarkSouls.NPCs
                     NPC ravager = new(); ravager.SetDefaults(npcID);
                     souls = ravager.lifeMax;
                     if (CalamityDownedBossSystem.Ravager.Downed) // 3600
-                        souls = (int)(souls * (2d / 25d));
+                        souls = (long)(souls * (2d / 25d));
                     else // 40000
-                        souls = (int)(souls * (8d / 9d));
+                        souls = (long)(souls * (8d / 9d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.AstrumDeus.ID)
@@ -897,9 +894,9 @@ namespace DarkSouls.NPCs
                     NPC astrumDeus = new(); astrumDeus.SetDefaults(npcID);
                     souls = astrumDeus.lifeMax;
                     if (CalamityDownedBossSystem.AstrumDeus.Downed) // 4000
-                        souls = (int)(souls * (1d / 150d));
+                        souls = (long)(souls * (1d / 150d));
                     else // 45000
-                        souls = (int)(souls * (3d / 40d));
+                        souls = (long)(souls * (3d / 40d));
                     return souls;
                 }
                 #endregion
@@ -910,9 +907,9 @@ namespace DarkSouls.NPCs
                     NPC guardianCommander = new(); guardianCommander.SetDefaults(npcID);
                     souls = guardianCommander.lifeMax;
                     if (CalamityDownedBossSystem.ProfanedGuardians.Downed) // 5000
-                        souls = (int)(souls * (1d / 20d));
+                        souls = (long)(souls * (1d / 20d));
                     else // 52000
-                        souls = (int)(souls * (13d / 25d));
+                        souls = (long)(souls * (13d / 25d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.Dragonfolly.ID)
@@ -923,9 +920,9 @@ namespace DarkSouls.NPCs
                     NPC dragonfolly = new(); dragonfolly.SetDefaults(npcID);
                     souls = dragonfolly.lifeMax;
                     if (CalamityDownedBossSystem.Dragonfolly.Downed) // 5250
-                        souls = (int)(souls * (7d / 250d));
+                        souls = (long)(souls * (7d / 250d));
                     else // 54500
-                        souls = (int)(souls * (109d / 375d));
+                        souls = (long)(souls * (109d / 375d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.ProvidenceTheProfanedGoddess.ID)
@@ -934,9 +931,9 @@ namespace DarkSouls.NPCs
                     NPC providence = new(); providence.SetDefaults(npcID);
                     souls = providence.lifeMax;
                     if (CalamityDownedBossSystem.ProvidenceTheProfanedGoddess.Downed) // 5500
-                        souls = (int)(souls * (11d / 625d));
+                        souls = (long)(souls * (11d / 625d));
                     else // 57000
-                        souls = (int)(souls * (114d / 625d));
+                        souls = (long)(souls * (114d / 625d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.StormWeaver.ID)
@@ -945,9 +942,9 @@ namespace DarkSouls.NPCs
                     NPC stormWeaver = new(); stormWeaver.SetDefaults(npcID);
                     souls = stormWeaver.lifeMax;
                     if (CalamityDownedBossSystem.StormWeaver.Downed) // 5700
-                        souls = (int)(souls * (19d / 2750d));
+                        souls = (long)(souls * (19d / 2750d));
                     else // 59000
-                        souls = (int)(souls * (59d / 825d));
+                        souls = (long)(souls * (59d / 825d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.CeaselessVoid.ID)
@@ -956,9 +953,9 @@ namespace DarkSouls.NPCs
                     NPC ceaselessVoid = new(); ceaselessVoid.SetDefaults(npcID);
                     souls = ceaselessVoid.lifeMax;
                     if (CalamityDownedBossSystem.CeaselessVoid.Downed) // 5750
-                        souls = (int)(souls * (23d / 260d));
+                        souls = (long)(souls * (23d / 260d));
                     else // 60000
-                        souls = (int)(souls * (12d / 13d));
+                        souls = (long)(souls * (12d / 13d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.SignusEnvoyOfTheDevourer.ID)
@@ -967,9 +964,9 @@ namespace DarkSouls.NPCs
                     NPC signus = new(); signus.SetDefaults(npcID);
                     souls = signus.lifeMax;
                     if (CalamityDownedBossSystem.SignusEnvoyOfTheDevourer.Downed) // 5800
-                        souls = (int)(souls * (29d / 1500d));
+                        souls = (long)(souls * (29d / 1500d));
                     else // 61000
-                        souls = (int)(souls * (61d / 300d));
+                        souls = (long)(souls * (61d / 300d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.Polterghast.ID)
@@ -978,9 +975,9 @@ namespace DarkSouls.NPCs
                     NPC polterghast = new(); polterghast.SetDefaults(npcID);
                     souls = polterghast.lifeMax;
                     if (CalamityDownedBossSystem.Polterghast.Downed) // 6000
-                        souls = (int)(souls * (3d / 175d));
+                        souls = (long)(souls * (3d / 175d));
                     else // 62500
-                        souls = (int)(souls * (5d / 28d));
+                        souls = (long)(souls * (5d / 28d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.TheOldDuke.ID)
@@ -989,9 +986,9 @@ namespace DarkSouls.NPCs
                     NPC theOldDuke = new(); theOldDuke.SetDefaults(npcID);
                     souls = theOldDuke.lifeMax;
                     if (CalamityDownedBossSystem.TheOldDuke.Downed) // 6300
-                        souls = (int)(souls * (63d / 5000d));
+                        souls = (long)(souls * (63d / 5000d));
                     else // 65000
-                        souls = (int)(souls * (13d / 100d));
+                        souls = (long)(souls * (13d / 100d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.TheDevourerOfGods.ID)
@@ -1000,9 +997,9 @@ namespace DarkSouls.NPCs
                     NPC theDevourerOfGods = new(); theDevourerOfGods.SetDefaults(npcID);
                     souls = theDevourerOfGods.lifeMax;
                     if (CalamityDownedBossSystem.TheDevourerOfGods.Downed) // 6600
-                        souls = (int)(souls * (66d / 8875d));
+                        souls = (long)(souls * (66d / 8875d));
                     else // 70000
-                        souls = (int)(souls * (28d / 355d));
+                        souls = (long)(souls * (28d / 355d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.YharonDragonOfRebirth.ID)
@@ -1011,9 +1008,9 @@ namespace DarkSouls.NPCs
                     NPC yharonDragonOfRebirth = new(); yharonDragonOfRebirth.SetDefaults(npcID);
                     souls = yharonDragonOfRebirth.lifeMax;
                     if (CalamityDownedBossSystem.YharonDragonOfRebirth.Downed) // 7000
-                        souls = (int)(souls * (7d / 1300d));
+                        souls = (long)(souls * (7d / 1300d));
                     else // 80000
-                        souls = (int)(souls * (4d / 65d));
+                        souls = (long)(souls * (4d / 65d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.SupremeWitchCalamitas.ID)
@@ -1022,9 +1019,9 @@ namespace DarkSouls.NPCs
                     NPC supremeWitchCalamitas = new(); supremeWitchCalamitas.SetDefaults(npcID);
                     souls = supremeWitchCalamitas.lifeMax;
                     if (CalamityDownedBossSystem.SupremeWitchCalamitas.Downed) // 8500
-                        souls = (int)(souls * (17d / 1920d));
+                        souls = (long)(souls * (17d / 1920d));
                     else // 100000
-                        souls = (int)(souls * (5d / 48d));
+                        souls = (long)(souls * (5d / 48d));
                     return souls;
                 }
                 else if (CalamityDownedBossSystem.IsExoMech(npc))
@@ -1041,9 +1038,9 @@ namespace DarkSouls.NPCs
                         NPC thanatos = new(); thanatos.SetDefaults(CalamityDownedBossSystem.Thanatos.ID);
                         souls = apollo.lifeMax + ares.lifeMax + thanatos.lifeMax;
                         if (CalamityDownedBossSystem.downedExoMechs) // 8500
-                            return (int)(souls * (17d / 6920d));
+                            return (long)(souls * (17d / 6920d));
                         else // 100000
-                            return (int)(souls * (5d / 173d));
+                            return (long)(souls * (5d / 173d));
                     }
                     return 0;
                 }
@@ -1060,16 +1057,16 @@ namespace DarkSouls.NPCs
                     if (CalamityDownedBossSystem.GiantClam.Downed)
                     {
                         if (Main.hardMode) // 875
-                            souls = (int)(souls * (7d / 60d));
+                            souls = (long)(souls * (7d / 60d));
                         else // 375
-                            souls = (int)(souls * (3d / 10d));
+                            souls = (long)(souls * (3d / 10d));
                     }
                     else
                     {
                         if (Main.hardMode) // 8400
-                            souls = (int)(souls * (28d / 25d));
+                            souls = (long)(souls * (28d / 25d));
                         else // 3000
-                            souls = (int)(souls * (12d / 5d));
+                            souls = (long)(souls * (12d / 5d));
                     }
                     return souls;
                 }
@@ -1079,9 +1076,9 @@ namespace DarkSouls.NPCs
                     NPC greatSandShark = new(); greatSandShark.SetDefaults(npcID);
                     souls = greatSandShark.lifeMax;
                     if (CalamityDownedBossSystem.GreatSandShark.Downed) // 1000
-                        souls = (int)(souls * (5d / 46d));
+                        souls = (long)(souls * (5d / 46d));
                     else // 12000
-                        souls = (int)(souls * (30d / 32d));
+                        souls = (long)(souls * (30d / 32d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.CragmawMire.ID)
@@ -1092,16 +1089,16 @@ namespace DarkSouls.NPCs
                     if (CalamityDownedBossSystem.CragmawMire.Downed)
                     {
                         if (CalamityDownedBossSystem.Polterghast.Downed) // 2250, T3
-                            souls = (int)(souls * (225d / 8063d));
+                            souls = (long)(souls * (225d / 8063d));
                         else // 800, T2
-                            souls = (int)(souls * (1d / 5d));
+                            souls = (long)(souls * (1d / 5d));
                     }
                     else // first kill
                     {
                         if (CalamityDownedBossSystem.Polterghast.Downed) // 20000, T3
-                            souls = (int)(souls * (2000d / 8063d));
+                            souls = (long)(souls * (2000d / 8063d));
                         else // 6000, T2
-                            souls = (int)(souls * (3d / 2d));
+                            souls = (long)(souls * (3d / 2d));
                     }
                     return souls;
                 }
@@ -1113,9 +1110,9 @@ namespace DarkSouls.NPCs
                     if ((CalamityDownedBossSystem.Mauler.Downed && npcID == CalamityDownedBossSystem.Mauler.ID) ||
                         (CalamityDownedBossSystem.NuclearTerror.Downed && npcID == CalamityDownedBossSystem.NuclearTerror.ID)
                     ) // 2400
-                        souls = (int)(souls * (2d / 75d));
+                        souls = (long)(souls * (2d / 75d));
                     else // 22000
-                        souls = (int)(souls * (11d / 45d));
+                        souls = (long)(souls * (11d / 45d));
                     return souls;
                 }
                 else if (npcID == CalamityDownedBossSystem.PrimordialWyrm.ID)
@@ -1124,9 +1121,9 @@ namespace DarkSouls.NPCs
                     NPC primordialWyrm = new(); primordialWyrm.SetDefaults(npcID);
                     souls = primordialWyrm.lifeMax;
                     if (CalamityDownedBossSystem.PrimordialWyrm.Downed) // 10000
-                        souls = (int)(souls * (1d / 250d));
+                        souls = (long)(souls * (1d / 250d));
                     else // 150000
-                        souls = (int)(souls * (3d / 50d));
+                        souls = (long)(souls * (3d / 50d));
                     return souls;
                 }
                 else if (npcID == CalamityNPCID.THELORDE)
@@ -1140,7 +1137,7 @@ namespace DarkSouls.NPCs
                 {
                     NPC enemy = new();
                     enemy.SetDefaults(npcID);
-                    return (int)(enemy.lifeMax * multiplier);
+                    return (long)(enemy.lifeMax * multiplier);
                 }
                 #endregion
             }
