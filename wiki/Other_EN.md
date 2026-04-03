@@ -15,3 +15,5 @@
 8. A new **Dark Souls Style** theme has been added to the main menu. When selected, the Dark Souls main menu loading sound plays, and the background music changes to **A Moment's Peace**:
 
 ![](images/MenuTheme.jpg)
+
+9. Customizable Dark Souls style soul counter
