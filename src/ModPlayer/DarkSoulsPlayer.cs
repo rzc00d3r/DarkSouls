@@ -182,7 +182,6 @@ namespace DarkSouls
             if (DarkSouls.ToggleDarkSoulsStatsUIKey.JustPressed)
             {
                 ModContent.GetInstance<DarkSoulsStatsUISystem>().ToggleUI();
-                AddSouls((long)(long.MaxValue * 0.8d));
             }
 
             else if (DarkSouls.TouchBloodstainKey.JustPressed)
