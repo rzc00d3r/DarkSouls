@@ -31,6 +31,9 @@ namespace DarkSouls.Config
         [DefaultValue(false)]
         public bool DisableDeathScreen = false;
 
+        [DefaultValue(true)]
+        public bool EnableSoulsCounterUI = true;
+
         [DefaultValue(95)]
         [Range(0, 100)]
         public int SoulsCounterXPercent = 95;

@@ -229,6 +229,11 @@ Configs: {
 				0% is the top, 100% is the bottom.
 				'''
 		}
+
+		EnableSoulsCounterUI: {
+			Label: Souls Counter UI
+			Tooltip: Enables the new Dark Souls I style souls counter. If disabled, gained souls will be displayed as combat text above the player's head.
+		}
 	}
 }
 

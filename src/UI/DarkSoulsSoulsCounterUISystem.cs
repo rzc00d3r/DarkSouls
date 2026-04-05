@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.UI;
+
 using Microsoft.Xna.Framework;
+
+using Terraria;
+using Terraria.UI;
+using Terraria.ModLoader;
 
 namespace DarkSouls.UI
 {
@@ -44,7 +46,7 @@ namespace DarkSouls.UI
                     "Dark Souls: Souls Counter",
                     delegate
                     {
-                        if (soulsCounterInterface != null)
+                        if (Config.ClientConfig.Instance.EnableSoulsCounterUI && soulsCounterInterface != null)
                             soulsCounterInterface.Draw(Main.spriteBatch, new GameTime());
                         return true;
                     },
