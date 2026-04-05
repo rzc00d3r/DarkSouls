@@ -132,8 +132,12 @@ namespace DarkSouls
         public int maxUsedLifeRegenDelay = 65;
         #endregion
 
-        #region Souls Counter
+        #region Souls Counter & Timers
         public bool instantSoulsCounterUpdate = false;
+
+        private long pendingSouls = 0;
+        private float soulTimer = 0f;
+        private float soulDelay = 1.25f;
         #endregion
 
         #region Damage Sound Variables
@@ -391,6 +395,25 @@ namespace DarkSouls
             Player.ConsumedLifeFruit = Math.Clamp((StatFormulas.GetHPByVitality(dsVitality) - 400) / 5, 0, Player.LifeFruitMax);
             Player.ConsumedManaCrystals = Math.Clamp(StatFormulas.GetManaByAttunement(dsAttunement) / 20, 0, Player.ManaCrystalMax);
 
+            maxStamina = StatFormulas.GetStaminaByEndurance(dsEndurance);
+
+            if (!ClientConfig.Instance.EnableSoulsCounterUI)
+            {
+                if (pendingSouls > 0)
+                {
+                    soulTimer += 1f / 60f;
+                    if (soulTimer >= soulDelay)
+                    {
+                        CombatText.NewText(Player.getRect(), Color.WhiteSmoke, "+" + pendingSouls.ToString());
+                        SoundEngine.PlaySound(DarkSouls.dsSoulSuck, Player.position);
+                        pendingSouls = 0;
+                        soulTimer = 0;
+                    }
+                }
+            }
+            else
+                pendingSouls = 0;
+
             // Handling click on the location of bloodstain
             if (currentBloodstainProjectile != -1 && Main.mouseRight && Main.mouseRightRelease && Main.netMode != NetmodeID.Server)
             {
@@ -399,8 +422,6 @@ namespace DarkSouls
                 if (proj.Hitbox.Contains(mouseWorld.ToPoint()))
                     TouchBloodstain();
             }
-
-            maxStamina = StatFormulas.GetStaminaByEndurance(dsEndurance);
 
             if (damageSoundTimer < damageSoundDelay)
                 damageSoundTimer += 1f / 60f;
@@ -435,6 +456,7 @@ namespace DarkSouls
                 staminaRegenDelay--;
                 return;
             }
+
             float newStaminaRegenRate = staminaRegenRate;
             if (CloranthyRingEffect)
                 newStaminaRegenRate *= (1f + CloranthyRing.StaminaRegenRateBonus);
@@ -637,11 +659,20 @@ namespace DarkSouls
 
             try
             {
-                dsSouls += finalAmount;
+                checked
+                {
+                    dsSouls += finalAmount;
+                }
             }
             catch (OverflowException)
             {
                 dsSouls = long.MaxValue;
+            }
+
+            if (!ClientConfig.Instance.EnableSoulsCounterUI)
+            {
+                pendingSouls += finalAmount;
+                soulTimer = 0f;
             }
         }
 
@@ -679,7 +710,18 @@ namespace DarkSouls
                 proj.Kill();
                 currentBloodstainProjectile = -1;
 
-                AddSouls(bloodstain.souls);
+                try
+                {
+                    checked
+                    {
+                        dsSouls += bloodstain.souls;
+                    }
+                }
+                catch (OverflowException)
+                {
+                    dsSouls = long.MaxValue;
+                }
+
                 dsHumanity += bloodstain.humanity;
                 instantSoulsCounterUpdate = true;
 

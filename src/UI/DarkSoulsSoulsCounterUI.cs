@@ -7,6 +7,7 @@ using Terraria.Audio;
 using Terraria.ModLoader;
 
 using ReLogic.Graphics;
+using DarkSouls.Config;
 
 namespace DarkSouls.UI
 {
@@ -33,7 +34,7 @@ namespace DarkSouls.UI
             DarkSoulsPlayer dsPlayer = Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>();
             long currentRealSouls = dsPlayer.dsSouls;
 
-            if (dsPlayer.instantSoulsCounterUpdate)
+            if (!ClientConfig.Instance.EnableSoulsCounterUI || dsPlayer.instantSoulsCounterUpdate)
             {
                 visualSouls = currentRealSouls;
                 targetSouls = currentRealSouls;
@@ -163,8 +164,8 @@ namespace DarkSouls.UI
             if (bgTexture == null)
                 bgTexture = ModContent.Request<Texture2D>("DarkSouls/UI/Textures/SoulsCounterBackground", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 
-            float percentX = Config.ClientConfig.Instance.SoulsCounterXPercent / 100f;
-            float percentY = Config.ClientConfig.Instance.SoulsCounterYPercent / 100f;
+            float percentX = ClientConfig.Instance.SoulsCounterXPercent / 100f;
+            float percentY = ClientConfig.Instance.SoulsCounterYPercent / 100f;
 
             float availableWidth = Main.screenWidth - bgTexture.Width;
             float availableHeight = Main.screenHeight - bgTexture.Height;
