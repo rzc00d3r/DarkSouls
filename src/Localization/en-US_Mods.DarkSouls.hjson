@@ -36,13 +36,17 @@ UI: {
 	}
 }
 
-BloodstainMessage:
-	'''
-	You have retrieved your lost souls and humanity!
-	Souls: +{0}
-	Humanity: +{1}
-	'''
-BloodstainErrorMessage: The bloodstain is out of reach!
+Messages: {
+	BloodstainMessage:
+		'''
+		You have retrieved your lost souls and humanity!
+		Souls: +{0}
+		Humanity: +{1}
+		'''
+	BloodstainErrorMessage: The bloodstain is out of reach!
+	LordvesselUnlocked: The Lordvessel has granted you the power to warp between bonfires... at the cost of your humanity.
+	FreeWarpUnlocked: The True Lord has taken the throne. Warping between bonfires no longer requires a sacrifice.
+}
 
 ScalingSystem: {
 	ReqParamDisplayName: ReqParam
@@ -141,6 +145,7 @@ Configs: {
 			Balance: Balance
 			Compatibility: Compatibility
 			ScalingSystem: Scaling system (ReqParam & ParamBonus)
+			Bonfire: Bonfire
 		}
 
 		DisableScalingSystemForVanilla: {
@@ -156,6 +161,11 @@ Configs: {
 		DisableCrowdControlMultiplier: {
 			Label: Disable Crowd Control Penalty
 			Tooltip: If enabled, soul yields will NOT be reduced when there are huge amounts of enemies (Zerg Potion, Chaos Candle, etc.)
+		}
+
+		BonfireTeleportHumanityCost: {
+			Label: Bonfire Teleport Humanity Cost
+			Tooltip: The amount of Humanity required to teleport between bonfires.
 		}
 	}
 
@@ -237,5 +247,13 @@ Configs: {
 	}
 }
 
+Tiles: {
+	DarkSoulsBonfire: {
+		DisplayName: Dark Souls Bonfire
+		RequiresHumanity: Requires {0} Humanity
+		NotEnoughHumanity: Not enough Humanity!
+		NotNearBonfire: You can only warp when near a bonfire!
+	}
+}
+
 Projectiles.BloodstainProjectile.DisplayName: Bloodstain Projectile
-Tiles.DarkSoulsBonfire.DisplayName: Dark Souls Bonfire

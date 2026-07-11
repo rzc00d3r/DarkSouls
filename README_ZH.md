@@ -50,6 +50,7 @@
   <li><a href="wiki/ReqParam_ParamBonus_ZH.md">需求能力值与属性补正</a></li>
   <li><a href="wiki/Dodge_ZH.md">闪避机制（冲刺）</a></li>
   <li><a href="wiki/Bloodstain_ZH.md">血迹</a></li>
+  <li><a href="wiki/BonfireTravel_ZH.md">营火快速传送</a></li>
   <li><a href="wiki/Items_ZH.md">物品</a></li>
   <li><a href="wiki/Hotkeys_ZH.md">快捷键</a></li>
   <li><a href="wiki/Config_ZH.md">模组配置</a></li>

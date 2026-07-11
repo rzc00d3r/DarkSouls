@@ -1,5 +1,5 @@
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 
 using Terraria;
 using Terraria.ID;
@@ -9,12 +9,12 @@ using Terraria.ModLoader;
 using ReLogic.Content;
 using ReLogic.Graphics;
 
-using DarkSouls.NPCs;
-using DarkSouls.Utils;
 using DarkSouls.Config;
-using DarkSouls.Systems;
-using DarkSouls.ModSupport;
 using DarkSouls.DataStructures;
+using DarkSouls.ModSupport;
+using DarkSouls.NPCs;
+using DarkSouls.Systems;
+using DarkSouls.Utils;
 
 namespace DarkSouls
 {
@@ -37,6 +37,7 @@ namespace DarkSouls
         public static SoundStyle dsInferfaceClickSound;
         public static SoundStyle dsInferfaceReturnSound;
         public static SoundStyle dsBonfireRestSound;
+        public static SoundStyle dsBonfireLoopSound;
         public static SoundStyle dsMainMenuStartSound;
         public static SoundStyle dsSoulSuck;
         public static SoundStyle dsThruDeath;
@@ -115,6 +116,11 @@ namespace DarkSouls
                 dsInferfaceClickSound = new("DarkSouls/Sounds/DS_InterfaceClick") { Volume = 0.85f };
                 dsInferfaceReturnSound = new("DarkSouls/Sounds/DS_InterfaceReturn") { Volume = 0.75f };
                 dsBonfireRestSound = new("DarkSouls/Sounds/DS_BonfireRest") { Volume = 0.5f };
+                dsBonfireLoopSound = new("DarkSouls/Sounds/DS_SoulFire")
+                {
+                    IsLooped = true,
+                    Volume = 0.35f,
+                };
                 dsMainMenuStartSound = new("DarkSouls/Sounds/DS_GAMESTART") { Volume = 0.65f };
                 dsSoulSuck = new("DarkSouls/Sounds/DS_SoulSuckBonus") { Volume = 0.4f, PitchVariance = 0.2f };
                 dsThruDeath = new("DarkSouls/Sounds/DS_ThruDeath") { Volume = 0.7f };
@@ -160,6 +166,7 @@ namespace DarkSouls
             dsInferfaceClickSound = default;
             dsInferfaceReturnSound = default;
             dsBonfireRestSound = default;
+            dsBonfireLoopSound = default;
             dsMainMenuStartSound = default;
             dsSoulSuck = default;
             dsThruDeath = default;
@@ -179,7 +186,9 @@ namespace DarkSouls
         public enum NetMessageTypes : byte
         {
             GetSouls,
-            SyncVitality
+
+            SyncVitality,
+            SyncHumanity
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
@@ -192,6 +201,7 @@ namespace DarkSouls
                     long souls = reader.ReadInt64();
                     Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>().AddSouls(souls);
                     break;
+
                 case NetMessageTypes.SyncVitality:
                     playerID = reader.ReadByte();
                     int newVitalityValue = reader.ReadInt32();
@@ -205,6 +215,23 @@ namespace DarkSouls
                         packet.Write((byte)NetMessageTypes.SyncVitality);
                         packet.Write(playerID);
                         packet.Write(newVitalityValue);
+                        packet.Send(-1, whoAmI);
+                    }
+                    break;
+
+                case NetMessageTypes.SyncHumanity:
+                    playerID = reader.ReadByte();
+                    int newHumanityValue = reader.ReadInt32();
+
+                    Player humanityPlayer = Main.player[playerID];
+                    humanityPlayer.GetModPlayer<DarkSoulsPlayer>().dsHumanity = newHumanityValue;
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)NetMessageTypes.SyncHumanity);
+                        packet.Write(playerID);
+                        packet.Write(newHumanityValue);
                         packet.Send(-1, whoAmI);
                     }
                     break;

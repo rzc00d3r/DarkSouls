@@ -57,6 +57,12 @@ namespace DarkSouls.Config
                 changes += $"  [{localizedFieldName}] {DisableScalingSystemForCalamity} -> {newConfig.DisableScalingSystemForCalamity}\n";
             }
 
+            if (BonfireTeleportHumanityCost != newConfig.BonfireTeleportHumanityCost)
+            {
+                localizedFieldName = this.GetLocalization("BonfireTeleportHumanityCost.Label").Value;
+                changes += $"  [{localizedFieldName}] {BonfireTeleportHumanityCost} -> {newConfig.BonfireTeleportHumanityCost}\n";
+            }
+
             ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"\nPlayer {playerName} changes mod configuration!\nDetail:\n{changes}".Trim()), Color.Goldenrod);
 
             return true;
@@ -76,15 +82,20 @@ namespace DarkSouls.Config
         [DefaultValue(false)]
         public bool DisableCrowdControlMultiplier = false;
 
-        [Header("Compatibility")]
-        [DefaultValue(false)]
-        public bool DisableVanillaDashLock = false;
+        [Header("Bonfire")]
+        [DefaultValue(8)]
+        [Range(0, 99)]
+        public int BonfireTeleportHumanityCost = 8;
 
-        [Header("$Mods.DarkSouls.Configs.ServerConfig.Headers.ScalingSystem")]
+        [Header("ScalingSystem")]
         [DefaultValue(false)]
         public bool DisableScalingSystemForVanilla = false;
 
         [DefaultValue(false)]
         public bool DisableScalingSystemForCalamity = false;
+
+        [Header("Compatibility")]
+        [DefaultValue(false)]
+        public bool DisableVanillaDashLock = false;
     }
 }

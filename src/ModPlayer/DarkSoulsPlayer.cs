@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -22,6 +22,7 @@ using DarkSouls.Config;
 using DarkSouls.Projectiles;
 using DarkSouls.DataStructures;
 using DarkSouls.Items.Accessories;
+using DarkSouls.Tiles.DarkSoulsBonfire;
 
 namespace DarkSouls
 {
@@ -148,6 +149,11 @@ namespace DarkSouls
         private SlotId lastDamageSoundSlotId;
         #endregion
 
+        #region Bonfire Sound Variable
+        private SlotId bonfireSoundSlot;
+        private float bonfireSoundCurrentVolume;
+        #endregion
+
         #region Dash Variables
         public const int dashDown = 0;
         public const int dashUp = 1;
@@ -191,7 +197,7 @@ namespace DarkSouls
             else if (DarkSouls.TouchBloodstainKey.JustPressed)
             {
                 if (!TouchBloodstain() && !Player.dead)
-                    Main.NewText(Language.GetTextValue("Mods.DarkSouls.BloodstainErrorMessage"), Color.DarkRed);
+                    Main.NewText(Language.GetTextValue("Mods.DarkSouls.Messages.BloodstainErrorMessage"), Color.DarkRed);
             }
         }
 
@@ -209,6 +215,10 @@ namespace DarkSouls
                             dashDir = dashDown;
                         else if (Player.controlUp)
                             dashDir = dashUp;
+                        else if (Player.controlRight)
+                            dashDir = dashRight;
+                        else if (Player.controlLeft)
+                            dashDir = dashLeft;
                         else
                             dashDir = Player.direction == 1 ? dashRight : dashLeft;
                     }
@@ -259,18 +269,15 @@ namespace DarkSouls
 
                 switch (dashDir)
                 {
-                    //case dashUp when Player.velocity.Y > -dashVelocity:
-                    //case dashDown when Player.velocity.Y < dashVelocity:
-                    //{
-                    //    float dashDirection = dashDir == dashDown ? 1 : -1.3f;
-                    //    newVelocity.Y = dashDirection * dashVelocity;
-                    //    break;
-                    //}
-                    case dashLeft when Player.velocity.X > -dashVelocity:
-                    case dashRight when Player.velocity.X < dashVelocity:
+                    case dashLeft:
+                    case dashRight:
                     {
                         float dashDirection = dashDir == dashRight ? 1 : -1;
-                        newVelocity.X = dashDirection * dashVelocity;
+                        float currentSpeed = Math.Abs(Player.velocity.X);
+                        float targetDashSpeed = Math.Max(dashVelocity, currentSpeed + 4f);
+
+                        newVelocity.X = dashDirection * targetDashSpeed;
+
                         break;
                     }
                     default:
@@ -282,6 +289,7 @@ namespace DarkSouls
                 Player.velocity = newVelocity;
 
                 ConsumeStamina(30f);
+
                 Player.immune = true;
                 Player.immuneTime = StatFormulas.GetInvincibilityFramesByResistance(dsResistance);
             }
@@ -291,7 +299,6 @@ namespace DarkSouls
 
             if (dashTimer > 0)
             {
-                Player.eocDash = dashTimer;
                 Player.armorEffectDrawShadowEOCShield = true;
                 dashTimer--;
             }
@@ -421,6 +428,52 @@ namespace DarkSouls
                 Vector2 mouseWorld = Main.MouseWorld;
                 if (proj.Hitbox.Contains(mouseWorld.ToPoint()))
                     TouchBloodstain();
+            }
+
+            // Bonfire sound
+            if (Player.whoAmI == Main.myPlayer)
+            {
+                Vector2? closestBonfirePos = null;
+                float maxDistance = 450f;
+                float minDistance = maxDistance;
+
+                foreach (var tile in TileEntity.ByID.Values.OfType<DarkSoulsBonfireTileEntity>())
+                {
+                    Vector2 bonfirePos = new Vector2(tile.Position.X + 1.5f, tile.Position.Y + 1.5f) * 16f;
+                    float distance = Vector2.Distance(Player.Center, bonfirePos);
+
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        closestBonfirePos = bonfirePos;
+                    }
+                }
+
+                if (closestBonfirePos.HasValue)
+                {
+                    bonfireSoundCurrentVolume = (1f - (minDistance / maxDistance)) * DarkSouls.dsBonfireLoopSound.Volume;
+                    bonfireSoundCurrentVolume = Math.Clamp(bonfireSoundCurrentVolume, 0f, DarkSouls.dsBonfireLoopSound.Volume);
+
+                    if (!SoundEngine.TryGetActiveSound(bonfireSoundSlot, out var activeSound))
+                    {
+                        bonfireSoundSlot = SoundEngine.PlaySound(DarkSouls.dsBonfireLoopSound, updateCallback: (activeSound) =>
+                        {
+                            if (!Main.hasFocus)
+                                return false;
+
+                            activeSound.Volume = bonfireSoundCurrentVolume;
+                            return true;
+                        });
+                    }
+                }
+                else
+                {
+                    if (SoundEngine.TryGetActiveSound(bonfireSoundSlot, out var activeSound))
+                    {
+                        activeSound.Stop();
+                        bonfireSoundCurrentVolume = 0f;
+                    }
+                }
             }
 
             if (damageSoundTimer < damageSoundDelay)
@@ -612,31 +665,45 @@ namespace DarkSouls
         #region Netcode
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
-            var vitalityPacket = Mod.GetPacket();
-            vitalityPacket.Write((byte)DarkSouls.NetMessageTypes.SyncVitality);
-            vitalityPacket.Write((byte)Player.whoAmI);
-            vitalityPacket.Write(dsVitality);
-            vitalityPacket.Send(toWho, fromWho);
+            SyncVitality(toWho, fromWho);
+            SyncHumanity(toWho, fromWho);
         }
 
         public override void CopyClientState(ModPlayer targetCopy)
         {
             base.CopyClientState(targetCopy);
             DarkSoulsPlayer dsPlayer = targetCopy as DarkSoulsPlayer;
+
             dsPlayer.dsVitality = dsVitality;
+            dsPlayer.dsHumanity = dsHumanity;
         }
 
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             DarkSoulsPlayer dsPlayer = clientPlayer as DarkSoulsPlayer;
+
             if (dsPlayer.dsVitality != dsVitality)
-            {
-                ModPacket packet = Mod.GetPacket();
-                packet.Write((byte)DarkSouls.NetMessageTypes.SyncVitality);
-                packet.Write((byte)Player.whoAmI);
-                packet.Write(dsVitality);
-                packet.Send();
-            }
+                SyncVitality();
+            if (dsPlayer.dsHumanity != dsHumanity)
+                SyncHumanity();
+        }
+
+        public void SyncVitality(int toWho = -1, int fromWho = -1)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)DarkSouls.NetMessageTypes.SyncVitality);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(dsVitality);
+            packet.Send(toWho, fromWho);
+        }
+
+        public void SyncHumanity(int toWho = -1, int fromWho = -1)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)DarkSouls.NetMessageTypes.SyncHumanity);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(dsHumanity);
+            packet.Send(toWho, fromWho);
         }
         #endregion
 
@@ -704,7 +771,7 @@ namespace DarkSouls
             Bloodstain bloodstain = bloodstains.FirstOrDefault(s => s.worldGUID == Main.ActiveWorldFileData.UniqueId.ToString());
             if (bloodstain != null)
             {
-                Main.NewText(Language.GetText("Mods.DarkSouls.BloodstainMessage").WithFormatArgs(bloodstain.souls, bloodstain.humanity).Value, Color.Cyan);
+                Main.NewText(Language.GetText("Mods.DarkSouls.Messages.BloodstainMessage").WithFormatArgs(bloodstain.souls, bloodstain.humanity).Value, Color.Cyan);
                 SoundEngine.PlaySound(DarkSouls.dsNewAreaSound);
                 
                 proj.Kill();
