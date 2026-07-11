@@ -189,10 +189,7 @@ namespace DarkSouls
             GetSouls,
 
             SyncVitality,
-            SyncHumanity,
-
-            AddBonfire,
-            RemoveBonfire
+            SyncHumanity
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
