@@ -36,13 +36,17 @@ UI: {
 	}
 }
 
-BloodstainMessage:
-	'''
-	你已取回失落的灵魂与人性！
-	魂: +{0}
-	人性: +{1}
-	'''
-BloodstainErrorMessage: 血迹超出可接触范围！
+Messages: {
+	BloodstainMessage:
+		'''
+		你已取回失落的灵魂与人性！
+		魂: +{0}
+		人性: +{1}
+		'''
+	BloodstainErrorMessage: 血迹超出可接触范围！
+	LordvesselUnlocked: 王器赐予了你在篝火间传送的力量……但那将燃烧你的人性。
+	FreeWarpUnlocked: 真正的领主已登上王座。从此，在篝火间传送不再需要祭品。
+}
 
 ScalingSystem: {
 	ReqParamDisplayName: 所需属性
@@ -141,6 +145,7 @@ Configs: {
 			Balance: 平衡
 			Compatibility: 兼容性
 			ScalingSystem: 缩放系统 (需求属性 & 属性加成)
+			Bonfire: 篝火
 		}
 
 		DisableScalingSystemForVanilla: {
@@ -156,6 +161,11 @@ Configs: {
 		DisableCrowdControlMultiplier: {
 			Label: 禁用群怪收益惩罚
 			Tooltip: 如果启用，在敌人数量极多时（如使用虫潮药水、混乱蜡烛等），灵魂掉落量将不再减少。
+		}
+
+		BonfireTeleportHumanityCost: {
+			Label: 篝火传送人性消耗
+			Tooltip: 在篝火之间传送所需的人性数量。
 		}
 	}
 
@@ -237,5 +247,13 @@ Configs: {
 	}
 }
 
+Tiles: {
+	DarkSoulsBonfire: {
+		DisplayName: 黑暗之魂篝火
+		RequiresHumanity: 需要 {0} 人性
+		NotEnoughHumanity: 人性不足！
+		NotNearBonfire: 只能在营火附近进行快速传送！
+	}
+}
+
 Projectiles.BloodstainProjectile.DisplayName: 血迹投射物
-Tiles.DarkSoulsBonfire.DisplayName: 黑暗之魂篝火

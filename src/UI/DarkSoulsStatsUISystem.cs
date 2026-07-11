@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+
+using Microsoft.Xna.Framework;
+
 using Terraria;
 using Terraria.UI;
 using Terraria.Audio;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 
 namespace DarkSouls.UI
 {

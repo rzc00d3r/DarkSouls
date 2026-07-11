@@ -1,10 +1,10 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+
+using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Terraria.Localization;
-
-using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 using DarkSouls.UI;
 
@@ -24,19 +24,25 @@ namespace DarkSouls.Tiles.DarkSoulsBonfire
             TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3);
             TileObjectData.newTile.CoordinateHeights = [16, 16, 20];
             TileObjectData.newTile.DrawYOffset = 2;
+
+            TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<DarkSoulsBonfireTileEntity>().Hook_AfterPlacement, -1, 0, false);
+            TileObjectData.newTile.UsesCustomCanPlace = true;
+
             TileObjectData.addTile(Type);
 
-            AddMapEntry(new Color(200, 100, 0), Language.GetText("Mods.DarkSouls.Tiles.DarkSoulsBonfire.DisplayName"));
+            AddMapEntry(new Color(200, 100, 0), this.GetLocalization("DisplayName"));
         }
 
         public override bool RightClick(int i, int j)
         {
             DarkSoulsStatsUISystem dsStatsUISystem = ModContent.GetInstance<DarkSoulsStatsUISystem>();
+
             if (!dsStatsUISystem.UserInterfaceIsVisible)
             {
                 if (dsStatsUISystem.ShowUI(true, i, j))
                     SoundEngine.PlaySound(DarkSouls.dsBonfireRestSound);
             }
+
             return true;
         }
 
@@ -79,6 +85,24 @@ namespace DarkSouls.Tiles.DarkSoulsBonfire
                 r = 0.9f + pulse;
                 g = 0.4f + pulse * 0.6f;
                 b = 0.1f + pulse * 0.2f;
+            }
+        }
+
+        public override void KillMultiTile(int i, int j, int frameX, int frameY)
+        {
+            Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 48, 48, Type);
+
+            for (int x = 0; x < 3; x++)
+            {
+                for (int y = 0; y < 3; y++)
+                {
+                    var point = new Point16(i + x, j + y);
+
+                    if (TileEntity.ByPosition.TryGetValue(point, out TileEntity entity) && entity is DarkSoulsBonfireTileEntity)
+                    {
+                        ModContent.GetInstance<DarkSoulsBonfireTileEntity>().Kill(point.X, point.Y);
+                    }
+                }
             }
         }
     }

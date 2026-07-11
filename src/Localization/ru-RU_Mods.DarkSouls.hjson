@@ -36,13 +36,17 @@ UI: {
 	}
 }
 
-BloodstainMessage:
-	'''
-	Вы вернули потерянные души и человечность!
-	Души: +{0}
-	Человечность: +{1}
-	'''
-BloodstainErrorMessage: Пятно крови вне зоны досягаемости!
+Messages: {
+	BloodstainMessage:
+		'''
+		Вы вернули потерянные души и человечность!
+		Души: +{0}
+		Человечность: +{1}
+		'''
+	BloodstainErrorMessage: Пятно крови вне зоны досягаемости!
+	LordvesselUnlocked: Великая Чаша даровала вам силу перемещаться между кострами... но это сожжет вашу человечность.
+	FreeWarpUnlocked: Истинный Повелитель занял свой трон. Отныне перемещение между кострами не требует жертв.
+}
 
 ScalingSystem: {
 	ReqParamDisplayName: Треб. парам-ы
@@ -142,6 +146,7 @@ Configs: {
 			Balance: Баланс
 			Compatibility: Совместимость
 			ScalingSystem: Система скейла (Треб. парам-ы & Бонус к парам-м)
+			Bonfire: Костёр
 		}
 
 		DisableScalingSystemForVanilla: {
@@ -157,6 +162,11 @@ Configs: {
 		DisableCrowdControlMultiplier: {
 			Label: Отключить штраф за толпу
 			Tooltip: Если включено, количество выпадающих душ НЕ будет снижаться при огромном количестве врагов (Зелье зергов, Свеча хаоса, и т. д.)
+		}
+
+		BonfireTeleportHumanityCost: {
+			Label: Стоимость телепортации (Человечность)
+			Tooltip: Количество человечности, необходимое для перемещения между кострами.
 		}
 	}
 
@@ -238,5 +248,13 @@ Configs: {
 	}
 }
 
+Tiles: {
+	DarkSoulsBonfire: {
+		DisplayName: Костёр (Dark Souls)
+		RequiresHumanity: Требуется {0} человечности
+		NotEnoughHumanity: Недостаточно человечности!
+		NotNearBonfire: Вы слишком далеко от костра, чтобы совершить перемещение!
+	}
+}
+
 // Projectiles.BloodstainProjectile.DisplayName: Bloodstain Projectile
-Tiles.DarkSoulsBonfire.DisplayName: Dark Souls Bonfire
