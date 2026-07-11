@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -215,6 +215,10 @@ namespace DarkSouls
                             dashDir = dashDown;
                         else if (Player.controlUp)
                             dashDir = dashUp;
+                        else if (Player.controlRight)
+                            dashDir = dashRight;
+                        else if (Player.controlLeft)
+                            dashDir = dashLeft;
                         else
                             dashDir = Player.direction == 1 ? dashRight : dashLeft;
                     }
@@ -265,18 +269,15 @@ namespace DarkSouls
 
                 switch (dashDir)
                 {
-                    //case dashUp when Player.velocity.Y > -dashVelocity:
-                    //case dashDown when Player.velocity.Y < dashVelocity:
-                    //{
-                    //    float dashDirection = dashDir == dashDown ? 1 : -1.3f;
-                    //    newVelocity.Y = dashDirection * dashVelocity;
-                    //    break;
-                    //}
-                    case dashLeft when Player.velocity.X > -dashVelocity:
-                    case dashRight when Player.velocity.X < dashVelocity:
+                    case dashLeft:
+                    case dashRight:
                     {
                         float dashDirection = dashDir == dashRight ? 1 : -1;
-                        newVelocity.X = dashDirection * dashVelocity;
+                        float currentSpeed = Math.Abs(Player.velocity.X);
+                        float targetDashSpeed = Math.Max(dashVelocity, currentSpeed + 4f);
+
+                        newVelocity.X = dashDirection * targetDashSpeed;
+
                         break;
                     }
                     default:
@@ -288,6 +289,7 @@ namespace DarkSouls
                 Player.velocity = newVelocity;
 
                 ConsumeStamina(30f);
+
                 Player.immune = true;
                 Player.immuneTime = StatFormulas.GetInvincibilityFramesByResistance(dsResistance);
             }
@@ -297,7 +299,6 @@ namespace DarkSouls
 
             if (dashTimer > 0)
             {
-                Player.eocDash = dashTimer;
                 Player.armorEffectDrawShadowEOCShield = true;
                 dashTimer--;
             }
