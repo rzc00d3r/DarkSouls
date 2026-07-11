@@ -91,6 +91,7 @@
   <li><a href="wiki/ReqParam_ParamBonus_RU.md">Треб. парам-ы и Бонус к парам-м (ReqParam и ParamBonus)</a></li>
   <li><a href="wiki/Dodge_RU.md">Механика уклонения (Рывок)</a></li>
   <li><a href="wiki/Bloodstain_RU.md">Пятно крови</a></li>
+  <li><a href="wiki/BonfireTravel_RU.md">Телепортация между кострами</a></li>
   <li><a href="wiki/Items_RU.md">Предметы</a></li>
   <li><a href="wiki/Hotkeys_RU.md">Горячие клавишы</a></li>
   <li><a href="wiki/Config_RU.md">Настройки мода</a></li>
@@ -110,6 +111,7 @@
   <li><a href="wiki/ReqParam_ParamBonus_EN.md">ReqParam and ParamBonus</a></li>
   <li><a href="wiki/Dodge_EN.md">Dodge Mechanic (Dash)</a></li>
   <li><a href="wiki/Bloodstain_EN.md">Bloodstain</a></li>
+  <li><a href="wiki/BonfireTravel_EN.md">Bonfire Fast Travel</a></li>
   <li><a href="wiki/Items_EN.md">Items</a></li>
   <li><a href="wiki/Hotkeys_EN.md">Hotkeys</a></li>
   <li><a href="wiki/Config_EN.md">Mod Config</a></li>
