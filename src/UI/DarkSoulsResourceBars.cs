@@ -36,6 +36,12 @@ namespace DarkSouls.UI
             segments = barWidth - (barBorderOffset * 2); // 220
         }
 
+        public override bool PreHover(out bool hoveringLife)
+        {
+            hoveringLife = true;
+            return false;
+        }
+
         public override void DrawLife(SpriteBatch spriteBatch)
         {
             DrawHealthBar(spriteBatch);
@@ -45,18 +51,14 @@ namespace DarkSouls.UI
 
         public override void DrawMana(SpriteBatch spriteBatch) { }
 
-        public override bool PreHover(out bool hoveringLife)
-        {
-            hoveringLife = true;
-            return false;
-        }
+        private float GetDrawPositionX() => Main.screenWidth - 296f; // Upper-left corner of mini map
 
         private void DrawHealthBar(SpriteBatch spriteBatch)
         {
             Player player = Main.LocalPlayer;
             DarkSoulsPlayer dsPlayer = player.GetModPlayer<DarkSoulsPlayer>();
 
-            Vector2 position = new Vector2(Main.miniMapX - 4f, 20f);
+            Vector2 position = new Vector2(GetDrawPositionX(), 20f);
             spriteBatch.Draw(emptyBar.Value, position, Color.White);
 
             if (player.statLifeMax2 > 0)
@@ -81,6 +83,7 @@ namespace DarkSouls.UI
 
             }
 
+            spriteBatch.Draw(emptyBar.Value, position, Color.White);
             DrawBarDividers(spriteBatch, position, 4);
 
             Vector2 textPos = position + new Vector2(barWidth + 5f, -1f);
@@ -92,7 +95,7 @@ namespace DarkSouls.UI
             Player player = Main.LocalPlayer;
             DarkSoulsPlayer dsPlayer = player.GetModPlayer<DarkSoulsPlayer>();
 
-            Vector2 position = new Vector2(Main.miniMapX - 4f, 20f + barHeight + 3f);
+            Vector2 position = new Vector2(GetDrawPositionX(), 20f + barHeight + 3f);
             spriteBatch.Draw(emptyBar.Value, position, Color.White);
 
             if (player.statManaMax2 > 0)
@@ -116,6 +119,7 @@ namespace DarkSouls.UI
                     DrawGradFill(spriteBatch, innerX, innerY, manaWidth, manaTop, manaBottom);
             }
 
+            spriteBatch.Draw(emptyBar.Value, position, Color.White);
             DrawBarDividers(spriteBatch, position, 4);
 
             Vector2 textPos = position + new Vector2(barWidth + 5f, -1f);
@@ -126,7 +130,7 @@ namespace DarkSouls.UI
         {
             DarkSoulsPlayer dsPlayer = Main.LocalPlayer.GetModPlayer<DarkSoulsPlayer>();
 
-            Vector2 position = new Vector2(Main.miniMapX - 4f, 20f + 2f * (barHeight + 3f));
+            Vector2 position = new Vector2(GetDrawPositionX(), 20f + 2f * (barHeight + 3f));
             spriteBatch.Draw(emptyBar.Value, position, Color.White);
 
             if (dsPlayer.maxStamina > 0)
@@ -150,6 +154,7 @@ namespace DarkSouls.UI
                     DrawGradFill(spriteBatch, innerX, innerY, stamWidth, stamTop, stamBottom);
             }
 
+            spriteBatch.Draw(emptyBar.Value, position, Color.White);
             DrawBarDividers(spriteBatch, position, 4);
 
             Vector2 textPos = position + new Vector2(barWidth + 5f, -1f);
@@ -159,19 +164,27 @@ namespace DarkSouls.UI
         private void DrawGradFill(SpriteBatch spriteBatch, float x, float y, float width, Color topColor, Color bottomColor)
         {
             Texture2D magicPixel = TextureAssets.MagicPixel.Value;
-            
+
+            int totalInnerHeight = barHeight - (barBorderOffset * 2);
+
+            int ix = (int)Math.Floor(x);
+            int iy = (int)Math.Floor(y) - 1;
+            int iWidth = (int)Math.Ceiling(width);
+            int iHeight = totalInnerHeight + 2;
+
             int steps = 4;
-            int heightPerStep = 8 / steps;
+            float heightPerStep = (float)iHeight / steps;
 
             for (int i = 0; i < steps; i++)
             {
-                float amount = (float)i / (steps - 1); 
-                
+                float amount = (float)i / (steps - 1);
                 Color stepColor = Color.Lerp(topColor, bottomColor, amount);
 
-                int currentY = (int)y + (i * heightPerStep);
+                int startY = iy + (int)Math.Floor(i * heightPerStep);
+                int endY = iy + (int)Math.Floor((i + 1) * heightPerStep);
+                int stepH = endY - startY;
 
-                spriteBatch.Draw(magicPixel, new Rectangle((int)x, currentY, (int)width, heightPerStep), stepColor);
+                spriteBatch.Draw(magicPixel, new Rectangle(ix, startY, iWidth, stepH), stepColor);
             }
         }
 

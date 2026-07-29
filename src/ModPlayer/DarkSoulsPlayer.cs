@@ -271,15 +271,15 @@ namespace DarkSouls
                 {
                     case dashLeft:
                     case dashRight:
-                    {
-                        float dashDirection = dashDir == dashRight ? 1 : -1;
-                        float currentSpeed = Math.Abs(Player.velocity.X);
-                        float targetDashSpeed = Math.Max(dashVelocity, currentSpeed + 4f);
+                        {
+                            float dashDirection = dashDir == dashRight ? 1 : -1;
+                            float currentSpeed = Math.Abs(Player.velocity.X);
+                            float targetDashSpeed = Math.Max(dashVelocity, currentSpeed + 4f);
 
-                        newVelocity.X = dashDirection * targetDashSpeed;
+                            newVelocity.X = dashDirection * targetDashSpeed;
 
-                        break;
-                    }
+                            break;
+                        }
                     default:
                         return;
                 }
@@ -773,7 +773,7 @@ namespace DarkSouls
             {
                 Main.NewText(Language.GetText("Mods.DarkSouls.Messages.BloodstainMessage").WithFormatArgs(bloodstain.souls, bloodstain.humanity).Value, Color.Cyan);
                 SoundEngine.PlaySound(DarkSouls.dsNewAreaSound);
-                
+
                 proj.Kill();
                 currentBloodstainProjectile = -1;
 
